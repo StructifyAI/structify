@@ -3,6 +3,9 @@ from huggingface_hub import list_models
 from PIL import Image
 import requests
 
+AUTH_TOKEN = None
+
+ENDPOINT = "http://localhost:8000/api"
 
 class StructifyData(Tool):
     name = "structify_data"
@@ -22,7 +25,16 @@ class StructifyData(Tool):
     outputs = ["image"]
 
     def __call__(self, query):
+        headers = {"Authorization": f"Token {AUTH_TOKEN}"}
+        if AUTH_TOKEN is None:
+            raise Exception("Please login to structify.ai using structify.login(email, password)")
         query = "MATCH (n) RETURN n;"
-        result = requests.get("http://localhost:8000/api/agent/query", params={"query": query})
+        result = requests.get(f"{ENDPOINT}/agent/query", params={"query": query}, headers=headers)
         return result.text
         
+
+def login(email, password):
+    global AUTH_TOKEN
+    result = requests.post(f"{ENDPOINT}/auth/login/", json={"email": email, "password": password})
+    AUTH_TOKEN = result.json()["token"]
+    return AUTH_TOKEN
