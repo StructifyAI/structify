@@ -1,0 +1,9 @@
+README.md
+setup.py
+structify/__init__.py
+structify/structify.py
+structify/test_agent.py
+structify.egg-info/PKG-INFO
+structify.egg-info/SOURCES.txt
+structify.egg-info/dependency_links.txt
+structify.egg-info/top_level.txt
