@@ -1,4 +1,4 @@
 *.csv
 *.pyc
-dist/*
-build/*
+dist/
+build/
