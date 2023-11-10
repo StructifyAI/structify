@@ -2,8 +2,13 @@ from typing import Optional
 import requests
 from pydantic import BaseModel
 import json
+import os
 
-ENDPOINT = "http://localhost:8001"
+ENDPOINT = (
+    os.environ["STRUCTIFY_ENDPOINT"]
+    if "STRUCTIFY_ENDPOINT" in os.environ
+    else "https://api.structify.ai"
+)
 
 
 class Client:
