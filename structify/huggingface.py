@@ -1,11 +1,6 @@
 import requests
 from transformers import Tool
 
-AUTH_TOKEN = None
-
-ENDPOINT = "http://localhost:8000/api"
-
-
 class StructifyData(Tool):
     name = "structify_data"
     description = (
@@ -36,10 +31,3 @@ class StructifyData(Tool):
         query = "MATCH (n) RETURN n;"
         result = requests.get(f"{ENDPOINT}/agent/query", params={"query": query}, headers=headers)
         return result.text
-
-
-def login(email, password):
-    global AUTH_TOKEN
-    result = requests.post(f"{ENDPOINT}/auth/login/", json={"email": email, "password": password})
-    AUTH_TOKEN = result.json()["token"]
-    return AUTH_TOKEN
