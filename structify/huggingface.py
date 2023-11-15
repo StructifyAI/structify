@@ -1,6 +1,7 @@
 import requests
 from transformers import Tool
 
+
 class StructifyData(Tool):
     name = "structify_data"
     description = (
@@ -25,6 +26,9 @@ class StructifyData(Tool):
     outputs = ["image"]
 
     def __call__(self, query):
+        # HACK: Will implement soon.
+        AUTH_TOKEN = None
+        ENDPOINT = None
         headers = {"Authorization": f"Token {AUTH_TOKEN}"}
         if AUTH_TOKEN is None:
             raise Exception("Please login to structify.ai using structify.login(email, password)")

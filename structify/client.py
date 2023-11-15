@@ -1,14 +1,10 @@
+import json
+import os
 from typing import Optional
 import requests
 from pydantic import BaseModel
-import json
-import os
 
-ENDPOINT = (
-    os.environ["STRUCTIFY_ENDPOINT"]
-    if "STRUCTIFY_ENDPOINT" in os.environ
-    else "https://api.structify.ai"
-)
+ENDPOINT = os.environ["STRUCTIFY_ENDPOINT"] if "STRUCTIFY_ENDPOINT" in os.environ else "https://api.structify.ai"
 
 
 class Client:
@@ -31,8 +27,6 @@ class Client:
 
 def login(email: str, password: str) -> Client:
     global AUTH_TOKEN
-    result = requests.post(
-        f"{ENDPOINT}/auth/login/", json={"email": email, "password": password}
-    )
+    result = requests.post(f"{ENDPOINT}/auth/login/", json={"email": email, "password": password})
     AUTH_TOKEN = result.json()["token"]
     return AUTH_TOKEN
