@@ -9,6 +9,6 @@ setup(
     author_email="alex@structify.ai",
     license="MIT License",
     packages=["structify"],
-    install_requires=["pydantic", "requests", "json"],
+    install_requires=["pydantic", "requests"],
     classifiers=[],
 )
