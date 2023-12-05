@@ -32,7 +32,10 @@ class Client:
 
 
     def __getattr__(self, key: str):
-        return API_ENDPOINTS.get(key)(self.token)
+        endpoint_cls = API_ENDPOINTS.get(key)
+        if endpoint_cls is None:
+            raise AttributeError(f"Unknown endpoint {key}")
+        return endpoint_cls(self.token)
 
 
 def login(email: str, password: str) -> Client:

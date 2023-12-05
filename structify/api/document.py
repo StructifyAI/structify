@@ -1,9 +1,14 @@
 import requests
 import base64
 from pathlib import Path
+from dataclasses import dataclass
 
 from structify.endpoint import ENDPOINT
 
+@dataclass
+class Document:
+    name: str
+    contents: bytes
 
 class DocumentAPI:
     def __init__(self, token):
@@ -37,3 +42,29 @@ class DocumentAPI:
             },
         )
         return result.json()
+
+    def get_file(self, file_id: str) -> Document:
+        result = requests.get(
+            f"{ENDPOINT}/files/download/{file_id}",
+            headers={
+                "Authorization": f"{self.token}",
+                "Content-Type": "application/json",
+            },
+        )
+        res = result.json()
+        return Document(
+            name=res["path"],
+            contents=base64.b64decode(res["contents"]),
+        )
+    
+    def delete_file(self, file_id: str):
+        result = requests.delete(
+            f"{ENDPOINT}/files/delete/{file_id}",
+            headers={
+                "Authorization": f"{self.token}",
+                "Content-Type": "application/json",
+            },
+        )
+        return result.json()
+
+
