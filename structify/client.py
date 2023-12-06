@@ -1,11 +1,9 @@
 import json
-import os
 from typing import List, Optional
 import requests
 from pydantic import BaseModel
-
-from structify.orm import Schema, Document
 from structify.endpoint import ENDPOINT
+from structify.orm import Document, Schema
 
 
 class QueryBuilder:
@@ -16,11 +14,11 @@ class QueryBuilder:
         "/entities/add": ("POST", Schema),
     }
 
-    def __init__(self, query_parts: List[str], token: str) -> "BuiltQuery":
+    def __init__(self, query_parts: List[str], token: str) -> "QueryBuilder":
         self.query_parts = query_parts
         self.token = token
 
-    def __getattr__(self, key: str) -> "BuiltQuery":
+    def __getattr__(self, key: str) -> "QueryBuilder":
         return QueryBuilder(self.query_parts + [key], self.token)
 
     def __call__(self, *args, **kwargs) -> BaseModel:
@@ -80,8 +78,6 @@ class Client:
 
 def login(email: str, password: str) -> Client:
     global AUTH_TOKEN
-    result = requests.post(
-        f"{ENDPOINT}/auth/login/", json={"email": email, "password": password}
-    )
+    result = requests.post(f"{ENDPOINT}/auth/login/", json={"email": email, "password": password})
     AUTH_TOKEN = result.json()["token"]
     return AUTH_TOKEN

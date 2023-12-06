@@ -2,13 +2,12 @@
 This is an example of updating all your contacts from a CSV with
 publically available information.
 """
-import os
-from pydantic import BaseModel
-import pandas as pd
 import json
-
+import os
+import pandas as pd
+from pydantic import BaseModel
 from structify import Client
-from structify.orm import Document, KnowledgeGraph, Schema
+from structify.orm import Schema
 
 
 class Person(BaseModel):

@@ -1,6 +1,6 @@
+import json
 from typing import Any
 from pydantic import BaseModel
-import json
 
 
 class Schema(BaseModel):
