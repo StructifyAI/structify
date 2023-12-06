@@ -4,6 +4,8 @@ publically available information.
 """
 import os
 from pydantic import BaseModel
+import pandas as pd
+import json
 
 from structify import Client
 from structify.orm import Document, KnowledgeGraph, Schema
@@ -11,8 +13,8 @@ from structify.orm import Document, KnowledgeGraph, Schema
 
 class Person(BaseModel):
     name: str
-    current_title: str
-    current_organization: str
+    # current_title: str
+    # current_organization: str
 
 
 def main():
@@ -25,17 +27,12 @@ def main():
     )
     client.schemas.add(schema)
 
-    # Upload our seed data.
-    try:
-        client.documents.delete(name="test.csv")
-    except:
-        print("No test.csv found")
-        pass
-    uploaded_doc = client.documents.add(
-        Document(name="test.csv", contents=open("test.csv").read())
-    )
+    df = pd.read_csv("test.csv", names=["name"])
+    for _, row in df.iterrows():
+        person = Person(name=row["name"])
+        client.entities.add(schema_name=schema.name, data=json.dumps(person.model_dump()))
 
-    kg = client.kg.process_document(document=uploaded_doc.id)
+    # kg = client.kg.process_document(document=uploaded_doc.id)
 
     # while kg.is_processing:
     #     kg = client.kg.get(kg.id)

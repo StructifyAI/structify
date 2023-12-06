@@ -13,6 +13,7 @@ class QueryBuilder:
         "/schemas/add": ("POST", Schema),
         "/documents/add": ("POST", Document),
         "/documents/delete": ("DELETE", Document),
+        "/entities/add": ("POST", Schema),
     }
 
     def __init__(self, query_parts: List[str], token: str) -> "BuiltQuery":
@@ -74,8 +75,6 @@ class Client:
         return output(**json.loads(result.json()))
 
     def __getattr__(self, key: str):
-        assert key in ["documents", "agent", "schemas"], f"Unknown endpoint {key}"
-
         return QueryBuilder([key], self.token)
 
 
