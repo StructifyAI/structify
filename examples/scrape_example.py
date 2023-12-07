@@ -19,17 +19,27 @@ class Person(BaseModel):
 def main():
     client = Client(auth=os.environ["STRUCTIFY_TOKEN"])
 
-    schema = Schema(
-        name="Person",
-        description="Describes a person, their associated title, and their organization",
-        schema_obj=Person,
-    )
-    client.schemas.add(schema)
-
-    df = pd.read_csv("test.csv", names=["name"])
+    df = pd.read_csv("test2.csv", names=["name"])
     for _, row in df.iterrows():
-        person = Person(name=row["name"])
-        client.entities.add(schema_name=schema.name, data=json.dumps(person.model_dump()))
+        try:
+            print(
+                client.agent.scrape(
+                    query=f"Can you find the linkedin and then the work history of '{row['name']}'? The '## refers to their Phillips Academy Andover class year."
+                )
+            )
+        except:
+            print(f"Error with {row['name']}")
+
+    # schema = Schema(
+    #     name="Person",
+    #     description="Describes a person, their associated title, and their organization",
+    #     schema_obj=Person,
+    # )
+    # client.schemas.add(schema)
+
+    # for _, row in df.iterrows():
+    #     person = Person(name=row["name"])
+    #     client.entities.add(schema_name=schema.name, data=json.dumps(person.model_dump()))
 
     # kg = client.kg.process_document(document=uploaded_doc.id)
 

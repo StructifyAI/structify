@@ -9,6 +9,7 @@ from structify.orm import Document, Schema
 class QueryBuilder:
     ENDPOINTS = {
         "/schemas/add": ("POST", Schema),
+        "/agent/scrape": ("POST", None),
         "/documents/add": ("POST", Document),
         "/documents/delete": ("DELETE", Document),
         "/entities/add": ("POST", Schema),
@@ -52,6 +53,8 @@ class QueryBuilder:
         res = result.json()
         if "error" in res:
             raise Exception(res["error"])
+        if output is None:
+            return res
         return output(**res)
 
 
