@@ -2,33 +2,22 @@
 This is an example of updating all your contacts from a CSV with
 publically available information.
 """
-import json
 import os
-import pandas as pd
 from pydantic import BaseModel
 from structify import Client
-from structify.orm import Schema
 
 
 class Person(BaseModel):
     name: str
-    # current_title: str
-    # current_organization: str
+    current_title: str
+    current_organization: str
 
 
 def main():
+    # TODO
     client = Client(auth=os.environ["STRUCTIFY_TOKEN"])
 
-    df = pd.read_csv("test2.csv", names=["name"])
-    for _, row in df.iterrows():
-        try:
-            print(
-                client.agent.scrape(
-                    query=f"Can you find the linkedin and then the work history of '{row['name']}'? The '## refers to their Phillips Academy Andover class year."
-                )
-            )
-        except:
-            print(f"Error with {row['name']}")
+    print(client)
 
     # schema = Schema(
     #     name="Person",
