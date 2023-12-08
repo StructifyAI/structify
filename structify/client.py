@@ -1,10 +1,61 @@
 import json
-import os
-from typing import Optional
+from typing import List, Optional
 import requests
 from pydantic import BaseModel
+from structify.endpoint import ENDPOINT
+from structify.orm import Document, Schema
 
-ENDPOINT = os.environ["STRUCTIFY_ENDPOINT"] if "STRUCTIFY_ENDPOINT" in os.environ else "https://api.structify.ai"
+
+class QueryBuilder:
+    ENDPOINTS = {
+        "/schemas/add": ("POST", Schema),
+        "/agent/scrape": ("POST", None),
+        "/documents/add": ("POST", Document),
+        "/documents/delete": ("DELETE", Document),
+        "/entities/add": ("POST", Schema),
+    }
+
+    def __init__(self, query_parts: List[str], token: str) -> "QueryBuilder":
+        self.query_parts = query_parts
+        self.token = token
+
+    def __getattr__(self, key: str) -> "QueryBuilder":
+        return QueryBuilder(self.query_parts + [key], self.token)
+
+    def __call__(self, *args, **kwargs) -> BaseModel:
+        subdomain = "/" + "/".join(self.query_parts)
+        method, output = self.ENDPOINTS[subdomain]
+        url = f"{ENDPOINT}{subdomain}"
+
+        request_args = kwargs
+
+        for arg in args:
+            if hasattr(arg, "to_dict"):
+                request_args.update(arg.to_dict())
+            elif isinstance(arg, BaseModel):
+                request_args.update(arg.model_dump())
+            else:
+                raise NotImplementedError(f"Unknown argument type {type(arg)}")
+
+        headers = {
+            "authorization": f"{self.token}",
+            "Content-Type": "application/json",
+        }
+        if method == "POST":
+            result = requests.post(url, json=request_args, headers=headers)
+        elif method == "GET":
+            result = requests.get(url, params=request_args, headers=headers)
+        elif method == "DELETE":
+            result = requests.delete(url, params=request_args, headers=headers)
+        else:
+            raise NotImplementedError(f"Unknown method {method}")
+
+        res = result.json()
+        if "error" in res:
+            raise Exception(res["error"])
+        if output is None:
+            return res
+        return output(**res)
 
 
 class Client:
@@ -23,6 +74,9 @@ class Client:
             },
         )
         return output(**json.loads(result.json()))
+
+    def __getattr__(self, key: str):
+        return QueryBuilder([key], self.token)
 
 
 def login(email: str, password: str) -> Client:
