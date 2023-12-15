@@ -8,7 +8,8 @@ from structify.orm import Document, Schema
 
 class QueryBuilder:
     ENDPOINTS = {
-        "/schemas/add": ("POST", Schema),
+        "/schemas/add": ("POST", lambda x: [Schema(z) for z in x]),
+        "/schemas/list": ("GET", lambda x: [Schema(**z) for z in x]),
         "/agent/scrape": ("POST", None),
         "/documents/add": ("POST", Document),
         "/documents/delete": ("DELETE", Document),
@@ -55,7 +56,10 @@ class QueryBuilder:
             raise Exception(res["error"])
         if output is None:
             return res
-        return output(**res)
+        elif isinstance(res, BaseModel):
+            return output(**res)
+        else:
+            return output(res)
 
 
 class Client:
@@ -81,6 +85,8 @@ class Client:
 
 def login(email: str, password: str) -> Client:
     global AUTH_TOKEN
-    result = requests.post(f"{ENDPOINT}/auth/login/", json={"email": email, "password": password})
+    result = requests.post(
+        f"{ENDPOINT}/auth/login/", json={"email": email, "password": password}
+    )
     AUTH_TOKEN = result.json()["token"]
     return AUTH_TOKEN

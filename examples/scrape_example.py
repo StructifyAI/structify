@@ -8,16 +8,20 @@ from structify import Client
 
 
 class Person(BaseModel):
-    name: str
-    current_title: str
-    current_organization: str
+    """
+    A person with a name, title, and organization
+    """
+    name: str # The name
+    current_title: str # The current title
+    current_organization: str # The current organization
 
 
 def main():
     # TODO
     client = Client(auth=os.environ["STRUCTIFY_TOKEN"])
 
-    print(client)
+
+    print(client.schemas.list())
 
     # schema = Schema(
     #     name="Person",
