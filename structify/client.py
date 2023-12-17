@@ -9,6 +9,7 @@ from structify.orm import Document, Schema
 class QueryBuilder:
     ENDPOINTS = {
         "/schemas/add": ("POST", lambda x: [Schema(z) for z in x]),
+        "/schemas/get": ("GET", Schema),
         "/schemas/list": ("GET", lambda x: [Schema(**z) for z in x]),
         "/agent/scrape": ("POST", None),
         "/documents/add": ("POST", Document),
@@ -56,7 +57,7 @@ class QueryBuilder:
             raise Exception(res["error"])
         if output is None:
             return res
-        elif isinstance(res, BaseModel):
+        elif issubclass(output, BaseModel):
             return output(**res)
         else:
             return output(res)
