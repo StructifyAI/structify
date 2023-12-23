@@ -1,5 +1,5 @@
 import json
-from typing import Any, List
+from typing import List
 from pydantic import BaseModel
 from structify.orm.value_types import ValueType
 

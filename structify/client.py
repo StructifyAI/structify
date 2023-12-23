@@ -86,8 +86,6 @@ class Client:
 
 def login(email: str, password: str) -> Client:
     global AUTH_TOKEN
-    result = requests.post(
-        f"{ENDPOINT}/auth/login/", json={"email": email, "password": password}
-    )
+    result = requests.post(f"{ENDPOINT}/auth/login/", json={"email": email, "password": password})
     AUTH_TOKEN = result.json()["token"]
     return AUTH_TOKEN
