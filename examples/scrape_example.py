@@ -4,13 +4,23 @@ publically available information.
 """
 import os
 from structify import Client
+from structify.orm.value_types import UniqueText
+from human import Human
+import pandas as pd
 
 
 def main():
     client = Client(auth=os.environ["STRUCTIFY_TOKEN"])
-    schema = client.schemas.get(schema_name="Company")
-    breakpoint()
-    client.researcher.on_demand_scrape(query="Find AI companies", schema=[schema])  # pages=1_000,
+    df = pd.read_csv("acme.csv")
+    for i, (name, title, company) in df.iterrows():
+        client.entities.add(
+            Human(
+                kg_name="acme",
+                name=UniqueText(value=name),
+                last_known_job_title=UniqueText(value=title),
+                last_known_job=UniqueText(value=company),
+            )
+        )
 
 
 if __name__ == "__main__":
