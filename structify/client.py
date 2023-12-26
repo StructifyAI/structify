@@ -3,7 +3,7 @@ from typing import List, Optional
 import requests
 from pydantic import BaseModel
 from structify.endpoint import ENDPOINT
-from structify.orm import Document, Schema
+from structify.orm import Document, Schema, GenericResponse
 
 
 class QueryBuilder:
@@ -11,7 +11,7 @@ class QueryBuilder:
         "/agent/scrape": ("POST", None),
         "/documents/add": ("POST", Document),
         "/documents/delete": ("DELETE", Document),
-        "/entities/add": ("POST", Schema),
+        "/entities/add": ("POST", GenericResponse),
         "/schemas/add": ("POST", Schema),
         "/schemas/delete": ("POST", Schema),
         "/schemas/get": ("GET", Schema),

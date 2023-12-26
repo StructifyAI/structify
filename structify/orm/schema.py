@@ -81,6 +81,7 @@ class SchemaInstance(BaseModel):
     The superclass to inherit from when defining a schema.
     """
     kg_name: Optional[str] = None
+    description: Optional[str] = None
 
     def to_dict(self):
         """
@@ -88,6 +89,7 @@ class SchemaInstance(BaseModel):
         """
         return {
             "data": self.model_dump(),
+            "description": self.description,
             "kg_name": self.kg_name,
             "schema_name": self.__class__.__name__,
         }
