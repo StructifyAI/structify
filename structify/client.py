@@ -40,6 +40,10 @@ class QueryBuilder:
             else:
                 raise NotImplementedError(f"Unknown argument type {type(arg)}")
 
+        for key, value in request_args.items():
+            if hasattr(value, "to_dict"):
+                request_args[key] = value.to_dict()
+
         headers = {
             "authorization": f"{self.token}",
             "Content-Type": "application/json",

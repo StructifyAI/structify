@@ -12,18 +12,19 @@ import pandas as pd
 def main():
     client = Client(auth=os.environ["STRUCTIFY_TOKEN"])
     df = pd.read_csv("acme.csv")
-    for _i, (name, title, company) in df.iterrows():
+    for i, (name, title, company) in df.iterrows():
+        if i >= 2:
+            break
         print(f"Adding {name} to the KG with values {title} and {company}")
         if pd.isna(company):
             continue
         client.entities.add(
-            Human(
-                kg_name="acme",
-                description="Test description",
+            entity=Human(
                 name=UniqueText(value=name),
                 last_known_job_title=UniqueText(value=title),
                 last_known_job=UniqueText(value=company),
             ),
+            name="acme",
         )
 
 

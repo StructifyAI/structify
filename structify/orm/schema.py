@@ -82,14 +82,14 @@ class SchemaInstance(BaseModel):
     """
     kg_name: Optional[str] = None
     description: Optional[str] = None
+    version: Optional[int] = 1
 
     def to_dict(self):
         """
         Serialize an entity to be added.
         """
         return {
-            "data": self.model_dump(),
-            "description": self.description,
-            "kg_name": self.kg_name,
-            "schema_name": self.__class__.__name__,
+            "name": self.__class__.__name__,
+            "version": self.version,
+            "object": self.model_dump(),
         }
