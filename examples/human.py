@@ -5,7 +5,8 @@ from structify.orm.value_types import UniqueText
 
 class Human(SchemaInstance):
     """
-    A Human
+    Description: A Human
+    Version: 1
     """
     name: UniqueText = Field(description="The name of the person")
     last_known_job: UniqueText = Field(

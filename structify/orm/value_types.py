@@ -11,5 +11,8 @@ class UniqueText(BaseModel):
 
 
 class ValueType(Enum):
-    IdNumber = IdNumber
-    UniqueText = UniqueText
+    IdNumber = "IdNumber"
+    UniqueText = "UniqueText"
+
+
+CONVERTER = {IdNumber: "IdNumber", UniqueText: "UniqueText"}

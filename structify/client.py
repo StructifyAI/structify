@@ -3,7 +3,7 @@ from typing import List, Optional
 import requests
 from pydantic import BaseModel
 from structify.endpoint import ENDPOINT
-from structify.orm import Document, Schema, GenericResponse
+from structify.orm import Document, Schema, GenericResponse, KnowledgeGraph
 
 
 class QueryBuilder:
@@ -12,6 +12,10 @@ class QueryBuilder:
         "/documents/add": ("POST", Document),
         "/documents/delete": ("DELETE", Document),
         "/entities/add": ("POST", GenericResponse),
+        "/kg/add": ("POST", GenericResponse),
+        "/kg/create": ("POST", GenericResponse),
+        "/kg/delete": ("POST", GenericResponse),
+        "/kg/get": ("POST", KnowledgeGraph),
         "/schemas/add": ("POST", Schema),
         "/schemas/delete": ("POST", Schema),
         "/schemas/get": ("GET", Schema),
@@ -60,7 +64,7 @@ class QueryBuilder:
         res = result.json()
         if "error" in res:
             raise Exception(res["error"])
-        
+
         if output is None:
             return res
         elif issubclass(output, BaseModel):

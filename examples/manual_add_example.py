@@ -11,6 +11,9 @@ import pandas as pd
 
 def main():
     client = Client(auth=os.environ["STRUCTIFY_TOKEN"])
+
+    client.kg.create(name="acme", description="Test use case")
+
     df = pd.read_csv("acme.csv")
     for i, (name, title, company) in df.iterrows():
         if i >= 2:
