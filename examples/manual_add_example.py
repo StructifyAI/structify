@@ -3,10 +3,10 @@ This is an example of updating all your contacts from a CSV with
 publically available information.
 """
 import os
+import pandas as pd
+from human import Human
 from structify import Client
 from structify.orm.value_types import UniqueText
-from human import Human
-import pandas as pd
 
 
 def main():

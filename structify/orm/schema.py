@@ -1,7 +1,7 @@
 import json
-from typing import List, Optional, Type, Union
+from typing import List, Optional, Type
 from pydantic import BaseModel
-from structify.orm.value_types import CONVERTER, UniqueText, IdNumber, ValueType
+from structify.orm.value_types import CONVERTER, ValueType
 
 
 class Property(BaseModel):
@@ -87,6 +87,7 @@ class SchemaInstance(BaseModel):
     """
     The superclass to inherit from when defining a schema.
     """
+
     description: Optional[str] = None
     version: Optional[int] = 1
 

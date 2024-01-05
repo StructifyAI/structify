@@ -3,7 +3,7 @@ from typing import List, Optional
 import requests
 from pydantic import BaseModel
 from structify.endpoint import ENDPOINT
-from structify.orm import Document, Schema, GenericResponse, KnowledgeGraph
+from structify.orm import Document, GenericResponse, KnowledgeGraph, Schema
 
 
 class QueryBuilder:
@@ -96,8 +96,6 @@ class Client:
 
 def login(email: str, password: str) -> Client:
     global AUTH_TOKEN
-    result = requests.post(
-        f"{ENDPOINT}/auth/login/", json={"email": email, "password": password}
-    )
+    result = requests.post(f"{ENDPOINT}/auth/login/", json={"email": email, "password": password})
     AUTH_TOKEN = result.json()["token"]
     return AUTH_TOKEN
