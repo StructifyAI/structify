@@ -16,6 +16,7 @@ class QueryBuilder:
         "/kg/create": ("POST", GenericResponse),
         "/kg/delete": ("POST", GenericResponse),
         "/kg/get": ("POST", KnowledgeGraph),
+        "/researcher/on_demand_scrape": ("POST", lambda x: [Schema(**z) for z in x]),
         "/schemas/add": ("POST", Schema),
         "/schemas/delete": ("POST", Schema),
         "/schemas/get": ("GET", Schema),
