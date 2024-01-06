@@ -10,5 +10,5 @@ class Human(SchemaInstance):
     """
 
     name: UniqueText = Field(description="The name of the person")
-    last_known_job: UniqueText = Field(description="The last known job of the person")
+    employer: UniqueText = Field(description="The last known employer of this person")
     last_known_job_title: UniqueText = Field(description="The last known job title of the person")
