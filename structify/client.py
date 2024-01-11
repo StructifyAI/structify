@@ -18,7 +18,7 @@ class QueryBuilder:
         "/kg/create": ("POST", GenericResponse),
         "/kg/delete": ("POST", GenericResponse),
         "/kg/get": ("POST", KnowledgeGraph),
-        "/researcher/on_demand_scrape": ("POST", lambda x: [SimpleNamespace(**z) for z in x]),
+        "/researcher/crawl": ("POST", lambda x: [SimpleNamespace(**z) for z in x]),
         "/schemas/add": ("POST", GenericResponse),
         "/schemas/delete": ("POST", Schema),
         "/schemas/get": ("GET", Schema),
@@ -64,7 +64,6 @@ class QueryBuilder:
         else:
             raise NotImplementedError(f"Unknown method {method}")
 
-        print(result.text)
         res = result.json()
         if "error" in res:
             raise Exception(res["error"])
