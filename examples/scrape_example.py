@@ -7,7 +7,7 @@ from structify.orm import Schema
 def main():
     client = Client(auth=os.environ["STRUCTIFY_TOKEN"])
     entity = client.researcher.on_demand_scrape(
-        query="Find me today's news articles that mention?",
+        query="Output the person who runs remote first capital.",
         schema_name="Human",
     )
     print(entity)

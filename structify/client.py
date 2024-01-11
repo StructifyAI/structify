@@ -65,6 +65,7 @@ class QueryBuilder:
         else:
             raise NotImplementedError(f"Unknown method {method}")
 
+        print(result.text)
         res = result.json()
         if "error" in res:
             raise Exception(res["error"])
