@@ -1,7 +1,7 @@
 import json
-from typing import List, Optional, Type, Union
+from typing import List, Optional, Type
 from pydantic import BaseModel
-from structify.orm.value_types import UniqueText, IdNumber, ValueType
+from structify.orm.value_types import CONVERTER, ValueType
 
 
 class Property(BaseModel):
@@ -13,7 +13,7 @@ class Property(BaseModel):
         return {
             "name": self.name,
             "description": self.description,
-            "value_type": self.value_type.value.__name__,
+            "value_type": self.value_type.value,
         }
 
 
@@ -57,19 +57,26 @@ class Schema(BaseModel):
     def from_pydantic(pydantic_model: Type[BaseModel]) -> "Schema":
         properties = []
         for field_name, field in pydantic_model.model_fields.items():
-            property = Property(
-                name=field_name,
-                description=field.description,
-                value_type=ValueType(field.annotation),
-            )
-            properties.append(property)
+            if field_name in ["description", "version"]:
+                continue
+            else:
+                property = Property(
+                    name=field_name,
+                    description=field.description,
+                    value_type=CONVERTER[field.annotation],
+                )
+                properties.append(property)
 
         # TODO: Assuming no relationships are defined in the Pydantic model
         relationships = []
 
+        description = pydantic_model.__doc__.split("Description:")[1].split("\n")[0].strip()
+        version = pydantic_model.__doc__.split("Version:")[1].split("\n")[0].strip()
+
         schema = Schema(
             name=pydantic_model.__name__,
-            description=pydantic_model.__doc__ or "",
+            description=description,
+            version=version,
             properties=properties,
             relationships=relationships,
         )
@@ -80,16 +87,16 @@ class SchemaInstance(BaseModel):
     """
     The superclass to inherit from when defining a schema.
     """
-    kg_name: Optional[str] = None
+
     description: Optional[str] = None
+    version: Optional[int] = 1
 
     def to_dict(self):
         """
         Serialize an entity to be added.
         """
         return {
-            "data": self.model_dump(),
-            "description": self.description,
-            "kg_name": self.kg_name,
-            "schema_name": self.__class__.__name__,
+            "name": self.__class__.__name__,
+            "version": self.version,
+            "object": self.model_dump(),
         }

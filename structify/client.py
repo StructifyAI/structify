@@ -1,9 +1,12 @@
 import json
+from inspect import isfunction
 from typing import List, Optional
 import requests
 from pydantic import BaseModel
+from types import SimpleNamespace
+
 from structify.endpoint import ENDPOINT
-from structify.orm import Document, Schema, GenericResponse
+from structify.orm import Document, GenericResponse, KnowledgeGraph, Schema
 
 
 class QueryBuilder:
@@ -12,7 +15,12 @@ class QueryBuilder:
         "/documents/add": ("POST", Document),
         "/documents/delete": ("DELETE", Document),
         "/entities/add": ("POST", GenericResponse),
-        "/schemas/add": ("POST", Schema),
+        "/kg/add": ("POST", GenericResponse),
+        "/kg/create": ("POST", GenericResponse),
+        "/kg/delete": ("POST", GenericResponse),
+        "/kg/get": ("POST", KnowledgeGraph),
+        "/researcher/on_demand_scrape": ("POST", lambda x: [SimpleNamespace(**z) for z in x]),
+        "/schemas/add": ("POST", GenericResponse),
         "/schemas/delete": ("POST", Schema),
         "/schemas/get": ("GET", Schema),
         "/schemas/list": ("GET", lambda x: [Schema(**z) for z in x]),
@@ -40,6 +48,10 @@ class QueryBuilder:
             else:
                 raise NotImplementedError(f"Unknown argument type {type(arg)}")
 
+        for key, value in request_args.items():
+            if hasattr(value, "to_dict"):
+                request_args[key] = value.to_dict()
+
         headers = {
             "authorization": f"{self.token}",
             "Content-Type": "application/json",
@@ -53,12 +65,15 @@ class QueryBuilder:
         else:
             raise NotImplementedError(f"Unknown method {method}")
 
+        print(result.text)
         res = result.json()
         if "error" in res:
             raise Exception(res["error"])
-        
+
         if output is None:
             return res
+        elif isfunction(output):
+            return output(res)
         elif issubclass(output, BaseModel):
             return output(**res)
         else:
@@ -88,8 +103,6 @@ class Client:
 
 def login(email: str, password: str) -> Client:
     global AUTH_TOKEN
-    result = requests.post(
-        f"{ENDPOINT}/auth/login/", json={"email": email, "password": password}
-    )
+    result = requests.post(f"{ENDPOINT}/auth/login/", json={"email": email, "password": password})
     AUTH_TOKEN = result.json()["token"]
     return AUTH_TOKEN
