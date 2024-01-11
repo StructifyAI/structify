@@ -1,10 +1,9 @@
 import json
 from inspect import isfunction
+from types import SimpleNamespace
 from typing import List, Optional
 import requests
 from pydantic import BaseModel
-from types import SimpleNamespace
-
 from structify.endpoint import ENDPOINT
 from structify.orm import Document, GenericResponse, KnowledgeGraph, Schema
 

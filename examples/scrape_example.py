@@ -1,7 +1,5 @@
 import os
-from human import Human
 from structify import Client
-from structify.orm import Schema
 
 
 def main():
