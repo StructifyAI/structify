@@ -16,8 +16,6 @@ def main():
 
     df = pd.read_csv("acme.csv")
     for i, (name, title, company) in df.iterrows():
-        if i >= 2:
-            break
         print(f"Adding {name} to the KG with values {title} and {company}")
         if pd.isna(company):
             continue
@@ -27,7 +25,7 @@ def main():
                 last_known_job_title=UniqueText(value=title),
                 last_known_job=UniqueText(value=company),
             ),
-            name="acme",
+            # name="acme",
         )
 
 

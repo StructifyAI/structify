@@ -1,8 +1,9 @@
 import json
 from inspect import isfunction
 from types import SimpleNamespace
-from typing import List, Optional
+from typing import List, Optional, Any
 import requests
+import logging
 from pydantic import BaseModel
 from structify.endpoint import ENDPOINT
 from structify.orm import Document, GenericResponse, KnowledgeGraph, Schema
@@ -32,7 +33,7 @@ class QueryBuilder:
     def __getattr__(self, key: str) -> "QueryBuilder":
         return QueryBuilder(self.query_parts + [key], self.token)
 
-    def __call__(self, *args, **kwargs) -> BaseModel:
+    def __call__(self, *args, **kwargs) -> Any:
         subdomain = "/" + "/".join(self.query_parts)
         method, output = self.ENDPOINTS[subdomain]
         url = f"{ENDPOINT}{subdomain}"
@@ -66,7 +67,8 @@ class QueryBuilder:
 
         res = result.json()
         if "error" in res:
-            raise Exception(res["error"])
+            logging.warn(res["error"])
+            return None
 
         if output is None:
             return res

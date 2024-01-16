@@ -20,14 +20,40 @@ class Property(BaseModel):
 class Relationship(BaseModel):
     name: str
     description: str
-    relationship_type: str
+    other: str
 
     def to_dict(self):
         return {
             "name": self.name,
             "description": self.description,
-            "schema": json.dumps(self.schema_obj.schema()),
+            "other": self.other,
         }
+
+
+class SchemaBox(BaseModel):
+    schemas: List["Schema"]
+
+    def from_pydantic(pydantic_model: Type[BaseModel]) -> "Schema":
+        """
+        We have to make sure we also get all the connected classes.
+        """
+        schemas = []
+        unprocessed_schemas = [pydantic_model]
+        processed_schemas = set()
+        while len(unprocessed_schemas) > 0:
+            schema = unprocessed_schemas.pop()
+            if schema in processed_schemas:
+                continue
+            for attribute in schema.model_fields.values():
+                if issubclass(attribute.annotation, SchemaInstance):
+                    unprocessed_schemas.append(attribute.annotation)
+            schemas.append(Schema.from_pydantic(schema))
+            processed_schemas.add(schema)
+
+        return SchemaBox(schemas=schemas)
+
+    def to_dict(self):
+        return [x.to_dict() for x in self.schemas]
 
 
 class Schema(BaseModel):
@@ -56,22 +82,30 @@ class Schema(BaseModel):
 
     def from_pydantic(pydantic_model: Type[BaseModel]) -> "Schema":
         properties = []
+        relationships = []
         for field_name, field in pydantic_model.model_fields.items():
-            if field_name in ["description", "version"]:
-                continue
-            else:
+            if field.annotation in CONVERTER:
                 property = Property(
                     name=field_name,
                     description=field.description,
                     value_type=CONVERTER[field.annotation],
                 )
                 properties.append(property)
+            elif issubclass(field.annotation, SchemaInstance):
+                # Relationship
+                rel_cls = field.annotation
+                relationships.append(
+                    Relationship(
+                        name=rel_cls.get_name(),
+                        description=rel_cls.get_description(),
+                        other=field.annotation.__name__,
+                    )
+                )
+            else:
+                raise Exception(f"Unknown type: {field.annotation}")
 
-        # TODO: Assuming no relationships are defined in the Pydantic model
-        relationships = []
-
-        description = pydantic_model.__doc__.split("Description:")[1].split("\n")[0].strip()
-        version = pydantic_model.__doc__.split("Version:")[1].split("\n")[0].strip()
+        description = pydantic_model.get_description()
+        version = pydantic_model.get_version()
 
         schema = Schema(
             name=pydantic_model.__name__,
@@ -88,15 +122,14 @@ class SchemaInstance(BaseModel):
     The superclass to inherit from when defining a schema.
     """
 
-    description: Optional[str] = None
-    version: Optional[int] = 1
+    @classmethod
+    def get_name(cls) -> str:
+        return cls.__name__
 
-    def to_dict(self):
-        """
-        Serialize an entity to be added.
-        """
-        return {
-            "name": self.__class__.__name__,
-            "version": self.version,
-            "object": self.model_dump(),
-        }
+    @classmethod
+    def get_version(cls) -> int:
+        return int(cls.__doc__.split("Version:")[1].split("\n")[0].strip())
+
+    @classmethod
+    def get_description(cls) -> str:
+        return cls.__doc__.split("Description:")[1].split("\n")[0].strip()
