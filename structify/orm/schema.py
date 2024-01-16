@@ -1,4 +1,3 @@
-import json
 from typing import List, Optional, Type
 from pydantic import BaseModel
 from structify.orm.value_types import CONVERTER, ValueType

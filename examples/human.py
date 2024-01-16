@@ -2,6 +2,7 @@ from pydantic import Field
 from structify.orm.schema import SchemaInstance
 from structify.orm.value_types import UniqueText
 
+
 class Company(SchemaInstance):
     """
     Description: A Company

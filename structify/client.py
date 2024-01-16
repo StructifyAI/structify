@@ -1,9 +1,9 @@
 import json
+import logging
 from inspect import isfunction
 from types import SimpleNamespace
-from typing import List, Optional, Any
+from typing import Any, List, Optional
 import requests
-import logging
 from pydantic import BaseModel
 from structify.endpoint import ENDPOINT
 from structify.orm import Document, GenericResponse, KnowledgeGraph, Schema
