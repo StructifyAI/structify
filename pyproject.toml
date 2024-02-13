@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "structifyai"
-version = "0.0.1"
+version = "0.0.2"
 description = "Structify"
 authors = ["Structify Team <team@structify.ai>"]
 license = "Discuss directly with founders for license."
