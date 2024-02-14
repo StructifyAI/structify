@@ -1,4 +1,4 @@
-Server API
--------------
+Server
+--------------------
 
-automodule:: structifyai.server
+.. autofunction:: structifyai.operations.ServerOperations.version

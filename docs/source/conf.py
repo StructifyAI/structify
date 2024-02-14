@@ -17,13 +17,13 @@ author = "Alex Reichenbach"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    # "sphinx.ext.napoleon",
     "sphinx.ext.doctest",
-    # "sphinx.ext.autosummary",
-    # "sphinx.ext.autodoc",
+    "sphinx.ext.autodoc",
     "autoapi.extension",
     # "sphinx.ext.autosectionlabel",
     # "sphinxcontrib.redoc",
+    # "sphinx.ext.napoleon",
+    # "sphinx.ext.autosummary",
 ]
 
 templates_path = ["/docs/_templates"]
