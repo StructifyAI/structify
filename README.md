@@ -98,6 +98,10 @@ Class | Method | HTTP request | Description
 *DatasetApi* | [**info**](docs/DatasetApi.md#info) | **GET** /dataset/info | Grabs a dataset by its id.
 *DatasetApi* | [**list**](docs/DatasetApi.md#list) | **GET** /dataset/list | List knowledge graph
 *DatasetApi* | [**query**](docs/DatasetApi.md#query) | **GET** /dataset/query | Query a dataset using conventional mechanisms like filter.
+*DocumentsApi* | [**documents_delete**](docs/DocumentsApi.md#documents_delete) | **DELETE** /documents/delete/{id} | Delete a file from the database
+*DocumentsApi* | [**documents_list**](docs/DocumentsApi.md#documents_list) | **GET** /documents/list | List all files in the database
+*DocumentsApi* | [**download**](docs/DocumentsApi.md#download) | **GET** /documents/download/{id} | Download a file from the database
+*DocumentsApi* | [**upload**](docs/DocumentsApi.md#upload) | **POST** /documents/upload | Add a new file to the database
 *ServerApi* | [**version**](docs/ServerApi.md#version) | **GET** /server/version | Version
 
 

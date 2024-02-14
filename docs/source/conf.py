@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 import sys
 
-sys.path.insert(0, "/home/dev/src/prospero/client/client/")
+sys.path.insert(0, "/home/dev/src/prospero/client/structify/")
 
 project = "Structify"
 copyright = "2024, Alex Reichenbach"
@@ -19,10 +19,10 @@ author = "Alex Reichenbach"
 extensions = [
     # "sphinx.ext.napoleon",
     "sphinx.ext.doctest",
-    "sphinx.ext.autosummary",
-    "sphinx.ext.autodoc",
-    # "autoapi.extension",
-    "sphinx.ext.autosectionlabel",
+    # "sphinx.ext.autosummary",
+    # "sphinx.ext.autodoc",
+    "autoapi.extension",
+    # "sphinx.ext.autosectionlabel",
     # "sphinxcontrib.redoc",
 ]
 

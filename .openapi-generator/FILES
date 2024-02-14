@@ -6,6 +6,7 @@ README.md
 docs/Dataset.md
 docs/DatasetApi.md
 docs/DatasetModel.md
+docs/DocumentsApi.md
 docs/ServerApi.md
 docs/ServerInformation.md
 git_push.sh
@@ -16,6 +17,7 @@ setup.py
 structifyai/__init__.py
 structifyai/api/__init__.py
 structifyai/api/dataset_api.py
+structifyai/api/documents_api.py
 structifyai/api/server_api.py
 structifyai/api_client.py
 structifyai/api_response.py
