@@ -61,16 +61,27 @@ configuration = structifyai.Configuration(
     host = "http://localhost"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: api_key
+configuration.api_key['api_key'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['api_key'] = 'Bearer'
 
 
 # Enter a context with an instance of the API client
 with structifyai.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = structifyai.DatasetApi(api_client)
+    dataset = structifyai.Dataset() # Dataset | 
 
     try:
         # Create a Dataset
-        api_instance.create()
+        api_instance.create(dataset)
     except ApiException as e:
         print("Exception when calling DatasetApi->create: %s\n" % e)
 
@@ -83,21 +94,31 @@ All URIs are relative to *http://localhost*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *DatasetApi* | [**create**](docs/DatasetApi.md#create) | **POST** /dataset/create | Create a Dataset
-*DatasetApi* | [**delete**](docs/DatasetApi.md#delete) | **POST** /dataset/delete | Remove a kg from the database
-*DatasetApi* | [**get**](docs/DatasetApi.md#get) | **POST** /dataset/get | Remove a kg from the database
-*DatasetApi* | [**list**](docs/DatasetApi.md#list) | **POST** /dataset/list | List knowledge graph
-*DatasetApi* | [**query**](docs/DatasetApi.md#query) | **GET** /dataset/query | Remove a kg from the database
+*DatasetApi* | [**delete**](docs/DatasetApi.md#delete) | **DELETE** /dataset/delete | Remove a kg from the database
+*DatasetApi* | [**info**](docs/DatasetApi.md#info) | **GET** /dataset/info | Grabs a dataset by its id.
+*DatasetApi* | [**list**](docs/DatasetApi.md#list) | **GET** /dataset/list | List knowledge graph
+*DatasetApi* | [**query**](docs/DatasetApi.md#query) | **GET** /dataset/query | Query a dataset using conventional mechanisms like filter.
 *ServerApi* | [**version**](docs/ServerApi.md#version) | **GET** /server/version | Version
 
 
 ## Documentation For Models
 
+ - [Dataset](docs/Dataset.md)
+ - [DatasetModel](docs/DatasetModel.md)
+ - [ServerInformation](docs/ServerInformation.md)
 
 
 <a id="documentation-for-authorization"></a>
 ## Documentation For Authorization
 
-Endpoints do not require authorization.
+
+Authentication schemes defined for the API:
+<a id="api_key"></a>
+### api_key
+
+- **Type**: API key
+- **API key parameter name**: api_key
+- **Location**: HTTP header
 
 
 ## Author

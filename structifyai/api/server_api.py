@@ -17,6 +17,7 @@ import warnings
 
 from pydantic import validate_arguments, ValidationError
 
+from structifyai.models.server_information import ServerInformation
 
 from structifyai.api_client import ApiClient
 from structifyai.api_response import ApiResponse
@@ -39,7 +40,7 @@ class ServerApi:
         self.api_client = api_client
 
     @validate_arguments
-    def version(self, **kwargs) -> None:  # noqa: E501
+    def version(self, **kwargs) -> ServerInformation:  # noqa: E501
         """Version  # noqa: E501
 
         Version  Gets the version of the API server.  # noqa: E501
@@ -58,7 +59,7 @@ class ServerApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: None
+        :rtype: ServerInformation
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -99,7 +100,7 @@ class ServerApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: None
+        :rtype: tuple(ServerInformation, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -142,10 +143,16 @@ class ServerApi:
         _files = {}
         # process the body parameter
         _body_params = None
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
         # authentication setting
         _auth_settings = []  # noqa: E501
 
-        _response_types_map = {}
+        _response_types_map = {
+            '200': "ServerInformation",
+        }
 
         return self.api_client.call_api(
             '/server/version', 'GET',

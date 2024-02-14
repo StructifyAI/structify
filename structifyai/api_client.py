@@ -757,23 +757,38 @@ class ApiClient:
 
         return klass.from_dict(data)
 
+# Import apis into this module
+from structifyai.api.server_api import ServerApi
+from structifyai.api.dataset_api import DatasetApi
 
 
 class Client:
     def __init__(self, host="https://api.structify.ai"):
         # Configure the ApiClient
-        config = Configuration()
-        config.host = host
-        self.api_client = ApiClient(configuration=config)
-
-        # Initialize API class for 
-        self._server_api = ServerApi(self.api_client)
-        self._schema_api = SchemaApi(self.api_client)
+        self.config = Configuration()
+        self.config.host = host
 
     @property
     def server(self):
-        return self._server_api
+        return ServerApi(ApiClient(configuration=self.config))
 
     @property
-    def schema(self):
-        return self._schema_api
+    def dataset(self):
+        self.check_auth()
+        return DatasetApi(ApiClient(configuration=self.config))
+
+    @property
+    def token(self):
+        """Getter for the bearer token."""
+        return self.config.api_key.get('api_key', None)
+
+    @token.setter
+    def token(self, token):
+        """Setter for the bearer token. It sets the token in the header for authentication."""
+        if token:
+            self.config.api_key['api_key'] = token
+        else:
+            self.config.api_key.pop('api_key', None)
+
+    def check_auth(self):
+        assert "api_key" in self.config.api_key, "Please set the token before calling protected functions."

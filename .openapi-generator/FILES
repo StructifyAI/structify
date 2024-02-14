@@ -3,8 +3,11 @@
 .gitlab-ci.yml
 .travis.yml
 README.md
+docs/Dataset.md
 docs/DatasetApi.md
+docs/DatasetModel.md
 docs/ServerApi.md
+docs/ServerInformation.md
 git_push.sh
 pyproject.toml
 requirements.txt
@@ -19,6 +22,9 @@ structifyai/api_response.py
 structifyai/configuration.py
 structifyai/exceptions.py
 structifyai/models/__init__.py
+structifyai/models/dataset.py
+structifyai/models/dataset_model.py
+structifyai/models/server_information.py
 structifyai/py.typed
 structifyai/rest.py
 test-requirements.txt

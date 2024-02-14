@@ -33,6 +33,4 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
-          skip_existing: true
-      - name: Sphinx Docs build with ReadTheDocs Docker  
-        uses: DavidLeoni/readthedocs-to-actions@v2.0
+          skip_existing: true # Hack while testing

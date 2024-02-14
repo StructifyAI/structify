@@ -42,7 +42,7 @@ class TestDatasetApi(unittest.TestCase):
     def test_get(self) -> None:
         """Test case for get
 
-        Remove a kg from the database  # noqa: E501
+        Grabs a dataset by its id.  # noqa: E501
         """
         pass
 
@@ -56,7 +56,7 @@ class TestDatasetApi(unittest.TestCase):
     def test_query(self) -> None:
         """Test case for query
 
-        Remove a kg from the database  # noqa: E501
+        Query a dataset using conventional mechanisms like filter.  # noqa: E501
         """
         pass
 

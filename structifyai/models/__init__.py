@@ -13,3 +13,6 @@
 
 
 # import models into model package
+from structifyai.models.dataset import Dataset
+from structifyai.models.dataset_model import DatasetModel
+from structifyai.models.server_information import ServerInformation

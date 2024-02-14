@@ -17,6 +17,13 @@ import warnings
 
 from pydantic import validate_arguments, ValidationError
 
+from typing_extensions import Annotated
+from pydantic import Field, StrictStr
+
+from typing import List
+
+from structifyai.models.dataset import Dataset
+from structifyai.models.dataset_model import DatasetModel
 
 from structifyai.api_client import ApiClient
 from structifyai.api_response import ApiResponse
@@ -39,16 +46,18 @@ class DatasetApi:
         self.api_client = api_client
 
     @validate_arguments
-    def create(self, **kwargs) -> None:  # noqa: E501
+    def create(self, dataset : Dataset, **kwargs) -> None:  # noqa: E501
         """Create a Dataset  # noqa: E501
 
-        Create a Dataset  Creates a dataset for the user.  # noqa: E501
+        Create a Dataset  Creates a dataset.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create(async_req=True)
+        >>> thread = api.create(dataset, async_req=True)
         >>> result = thread.get()
 
+        :param dataset: (required)
+        :type dataset: Dataset
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request.
@@ -64,19 +73,21 @@ class DatasetApi:
         if '_preload_content' in kwargs:
             message = "Error! Please call the create_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
-        return self.create_with_http_info(**kwargs)  # noqa: E501
+        return self.create_with_http_info(dataset, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def create_with_http_info(self, **kwargs) -> ApiResponse:  # noqa: E501
+    def create_with_http_info(self, dataset : Dataset, **kwargs) -> ApiResponse:  # noqa: E501
         """Create a Dataset  # noqa: E501
 
-        Create a Dataset  Creates a dataset for the user.  # noqa: E501
+        Create a Dataset  Creates a dataset.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.create_with_http_info(async_req=True)
+        >>> thread = api.create_with_http_info(dataset, async_req=True)
         >>> result = thread.get()
 
+        :param dataset: (required)
+        :type dataset: Dataset
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -105,6 +116,7 @@ class DatasetApi:
         _params = locals()
 
         _all_params = [
+            'dataset'
         ]
         _all_params.extend(
             [
@@ -142,8 +154,18 @@ class DatasetApi:
         _files = {}
         # process the body parameter
         _body_params = None
+        if _params['dataset'] is not None:
+            _body_params = _params['dataset']
+
+        # set the HTTP header `Content-Type`
+        _content_types_list = _params.get('_content_type',
+            self.api_client.select_header_content_type(
+                ['application/json']))
+        if _content_types_list:
+                _header_params['Content-Type'] = _content_types_list
+
         # authentication setting
-        _auth_settings = []  # noqa: E501
+        _auth_settings = ['api_key']  # noqa: E501
 
         _response_types_map = {}
 
@@ -165,16 +187,18 @@ class DatasetApi:
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def delete(self, **kwargs) -> None:  # noqa: E501
+    def delete(self, name : Annotated[StrictStr, Field(..., description="The name of the dataset")], **kwargs) -> None:  # noqa: E501
         """Remove a kg from the database  # noqa: E501
 
         Remove a kg from the database  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.delete(async_req=True)
+        >>> thread = api.delete(name, async_req=True)
         >>> result = thread.get()
 
+        :param name: The name of the dataset (required)
+        :type name: str
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request.
@@ -190,19 +214,21 @@ class DatasetApi:
         if '_preload_content' in kwargs:
             message = "Error! Please call the delete_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
-        return self.delete_with_http_info(**kwargs)  # noqa: E501
+        return self.delete_with_http_info(name, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def delete_with_http_info(self, **kwargs) -> ApiResponse:  # noqa: E501
+    def delete_with_http_info(self, name : Annotated[StrictStr, Field(..., description="The name of the dataset")], **kwargs) -> ApiResponse:  # noqa: E501
         """Remove a kg from the database  # noqa: E501
 
         Remove a kg from the database  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.delete_with_http_info(async_req=True)
+        >>> thread = api.delete_with_http_info(name, async_req=True)
         >>> result = thread.get()
 
+        :param name: The name of the dataset (required)
+        :type name: str
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -231,6 +257,7 @@ class DatasetApi:
         _params = locals()
 
         _all_params = [
+            'name'
         ]
         _all_params.extend(
             [
@@ -261,6 +288,9 @@ class DatasetApi:
 
         # process the query parameters
         _query_params = []
+        if _params.get('name') is not None:  # noqa: E501
+            _query_params.append(('name', _params['name']))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -269,12 +299,12 @@ class DatasetApi:
         # process the body parameter
         _body_params = None
         # authentication setting
-        _auth_settings = []  # noqa: E501
+        _auth_settings = ['api_key']  # noqa: E501
 
         _response_types_map = {}
 
         return self.api_client.call_api(
-            '/dataset/delete', 'POST',
+            '/dataset/delete', 'DELETE',
             _path_params,
             _query_params,
             _header_params,
@@ -291,16 +321,18 @@ class DatasetApi:
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def get(self, **kwargs) -> None:  # noqa: E501
-        """Remove a kg from the database  # noqa: E501
+    def info(self, name : Annotated[StrictStr, Field(..., description="The name of the dataset")], **kwargs) -> DatasetModel:  # noqa: E501
+        """Grabs a dataset by its id.  # noqa: E501
 
-        Remove a kg from the database  # noqa: E501
+        Grabs a dataset by its id.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get(async_req=True)
+        >>> thread = api.info(name, async_req=True)
         >>> result = thread.get()
 
+        :param name: The name of the dataset (required)
+        :type name: str
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _request_timeout: timeout setting for this request.
@@ -310,25 +342,27 @@ class DatasetApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: None
+        :rtype: DatasetModel
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
-            message = "Error! Please call the get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            message = "Error! Please call the info_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
             raise ValueError(message)
-        return self.get_with_http_info(**kwargs)  # noqa: E501
+        return self.info_with_http_info(name, **kwargs)  # noqa: E501
 
     @validate_arguments
-    def get_with_http_info(self, **kwargs) -> ApiResponse:  # noqa: E501
-        """Remove a kg from the database  # noqa: E501
+    def info_with_http_info(self, name : Annotated[StrictStr, Field(..., description="The name of the dataset")], **kwargs) -> ApiResponse:  # noqa: E501
+        """Grabs a dataset by its id.  # noqa: E501
 
-        Remove a kg from the database  # noqa: E501
+        Grabs a dataset by its id.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
-        >>> thread = api.get_with_http_info(async_req=True)
+        >>> thread = api.info_with_http_info(name, async_req=True)
         >>> result = thread.get()
 
+        :param name: The name of the dataset (required)
+        :type name: str
         :param async_req: Whether to execute the request asynchronously.
         :type async_req: bool, optional
         :param _preload_content: if False, the ApiResponse.data will
@@ -351,12 +385,13 @@ class DatasetApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: None
+        :rtype: tuple(DatasetModel, status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
 
         _all_params = [
+            'name'
         ]
         _all_params.extend(
             [
@@ -375,7 +410,7 @@ class DatasetApi:
             if _key not in _all_params:
                 raise ApiTypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method get" % _key
+                    " to method info" % _key
                 )
             _params[_key] = _val
         del _params['kwargs']
@@ -387,6 +422,9 @@ class DatasetApi:
 
         # process the query parameters
         _query_params = []
+        if _params.get('name') is not None:  # noqa: E501
+            _query_params.append(('name', _params['name']))
+
         # process the header parameters
         _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
@@ -394,13 +432,20 @@ class DatasetApi:
         _files = {}
         # process the body parameter
         _body_params = None
-        # authentication setting
-        _auth_settings = []  # noqa: E501
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
 
-        _response_types_map = {}
+        # authentication setting
+        _auth_settings = ['api_key']  # noqa: E501
+
+        _response_types_map = {
+            '200': "DatasetModel",
+            '400': None,
+        }
 
         return self.api_client.call_api(
-            '/dataset/get', 'POST',
+            '/dataset/info', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -417,7 +462,7 @@ class DatasetApi:
             _request_auth=_params.get('_request_auth'))
 
     @validate_arguments
-    def list(self, **kwargs) -> None:  # noqa: E501
+    def list(self, **kwargs) -> List[DatasetModel]:  # noqa: E501
         """List knowledge graph  # noqa: E501
 
         List knowledge graph  Iterate through all the nodes and edges of the csv in json format  # noqa: E501
@@ -436,7 +481,7 @@ class DatasetApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: None
+        :rtype: List[DatasetModel]
         """
         kwargs['_return_http_data_only'] = True
         if '_preload_content' in kwargs:
@@ -477,7 +522,7 @@ class DatasetApi:
         :return: Returns the result object.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: None
+        :rtype: tuple(List[DatasetModel], status_code(int), headers(HTTPHeaderDict))
         """
 
         _params = locals()
@@ -520,13 +565,20 @@ class DatasetApi:
         _files = {}
         # process the body parameter
         _body_params = None
-        # authentication setting
-        _auth_settings = []  # noqa: E501
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
 
-        _response_types_map = {}
+        # authentication setting
+        _auth_settings = ['api_key']  # noqa: E501
+
+        _response_types_map = {
+            '200': "List[DatasetModel]",
+            '400': None,
+        }
 
         return self.api_client.call_api(
-            '/dataset/list', 'POST',
+            '/dataset/list', 'GET',
             _path_params,
             _query_params,
             _header_params,
@@ -544,9 +596,9 @@ class DatasetApi:
 
     @validate_arguments
     def query(self, **kwargs) -> None:  # noqa: E501
-        """Remove a kg from the database  # noqa: E501
+        """Query a dataset using conventional mechanisms like filter.  # noqa: E501
 
-        Remove a kg from the database  # noqa: E501
+        Query a dataset using conventional mechanisms like filter.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
@@ -572,9 +624,9 @@ class DatasetApi:
 
     @validate_arguments
     def query_with_http_info(self, **kwargs) -> ApiResponse:  # noqa: E501
-        """Remove a kg from the database  # noqa: E501
+        """Query a dataset using conventional mechanisms like filter.  # noqa: E501
 
-        Remove a kg from the database  # noqa: E501
+        Query a dataset using conventional mechanisms like filter.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
@@ -647,7 +699,7 @@ class DatasetApi:
         # process the body parameter
         _body_params = None
         # authentication setting
-        _auth_settings = []  # noqa: E501
+        _auth_settings = ['api_key']  # noqa: E501
 
         _response_types_map = {}
 

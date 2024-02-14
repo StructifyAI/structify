@@ -34,3 +34,6 @@ from structifyai.exceptions import ApiAttributeError
 from structifyai.exceptions import ApiException
 
 # import models into sdk package
+from structifyai.models.dataset import Dataset
+from structifyai.models.dataset_model import DatasetModel
+from structifyai.models.server_information import ServerInformation
