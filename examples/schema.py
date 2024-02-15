@@ -1,4 +1,3 @@
-from typing import List
 import json
 from pydantic import BaseModel
 from structifyai import Client

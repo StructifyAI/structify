@@ -30,6 +30,7 @@ Endpoints
 
    python_client/server
    python_client/datasets
+   python_client/documents
 
 Tutorials
 ------------

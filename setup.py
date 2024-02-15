@@ -11,7 +11,7 @@
 """
 
 
-from setuptools import setup, find_packages  # noqa: H301
+from setuptools import find_packages, setup  # noqa: H301
 
 # To install the library, run the following
 #
@@ -22,12 +22,7 @@ from setuptools import setup, find_packages  # noqa: H301
 NAME = "structifyai"
 VERSION = "0.0.2"
 PYTHON_REQUIRES = ">=3.7"
-REQUIRES = [
-    "urllib3 >= 1.25.3, < 2.1.0",
-    "python-dateutil",
-    "pydantic >= 1.10.5, < 2",
-    "aenum"
-]
+REQUIRES = ["urllib3 >= 1.25.3, < 2.1.0", "python-dateutil", "pydantic >= 1.10.5, < 2", "aenum"]
 
 setup(
     name=NAME,
@@ -41,7 +36,7 @@ setup(
     packages=find_packages(exclude=["test", "tests"]),
     include_package_data=True,
     license="Discuss directly with founders for license.",
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     long_description="""\
     Unify all your unstructured knowledged into one structured source.
     """,  # noqa: E501
