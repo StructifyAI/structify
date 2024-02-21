@@ -8,4 +8,4 @@ Unify all your unstructured knowledged into one structured source.
 Python 3.7+
 
 ## Installation & Usage
-Follow the documentation [here](api.structify.ai).
+Follow the documentation [here](https://www.api.structify.ai).
