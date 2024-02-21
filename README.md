@@ -1,4 +1,4 @@
-![Logo](assets/logo.png | width=100)
+<img src='assets/logo.png' width='128'>
 
 # structifyai
 ![docs](https://readthedocs.org/projects/structify/badge/?version=latest)
