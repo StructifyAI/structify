@@ -118,6 +118,24 @@ def build_dataset_query_request(**kwargs: Any) -> HttpRequest:
     return HttpRequest(method="GET", url=_url, **kwargs)
 
 
+def build_dataset_view_request(*, dataset_name: str, **kwargs: Any) -> HttpRequest:
+    _headers = case_insensitive_dict(kwargs.pop("headers", {}) or {})
+    _params = case_insensitive_dict(kwargs.pop("params", {}) or {})
+
+    accept = _headers.pop("Accept", "application/json")
+
+    # Construct URL
+    _url = "/dataset/view"
+
+    # Construct parameters
+    _params["dataset_name"] = _SERIALIZER.query("dataset_name", dataset_name, "str")
+
+    # Construct headers
+    _headers["Accept"] = _SERIALIZER.header("accept", accept, "str")
+
+    return HttpRequest(method="GET", url=_url, params=_params, headers=_headers, **kwargs)
+
+
 def build_documents_delete_request(path: str, **kwargs: Any) -> HttpRequest:
     # Construct URL
     _url = "/documents/delete/{path}"
@@ -574,15 +592,15 @@ class DatasetOperations:
         return cast(Optional[JSON], deserialized)  # type: ignore
 
     @distributed_trace
-    def list(self, **kwargs: Any) -> Optional[List[JSON]]:
+    def list(self, **kwargs: Any) -> List[JSON]:
         """List knowledge graph.
 
         List knowledge graph
 
         Iterate through all the nodes and edges of the csv in json format.
 
-        :return: list of JSON object or None
-        :rtype: list[JSON] or None
+        :return: list of JSON object
+        :rtype: list[JSON]
         :raises ~azure.core.exceptions.HttpResponseError:
 
         Example:
@@ -608,7 +626,7 @@ class DatasetOperations:
         _headers = kwargs.pop("headers", {}) or {}
         _params = kwargs.pop("params", {}) or {}
 
-        cls: ClsType[Optional[List[JSON]]] = kwargs.pop("cls", None)
+        cls: ClsType[List[JSON]] = kwargs.pop("cls", None)
 
         _request = build_dataset_list_request(
             headers=_headers,
@@ -623,23 +641,21 @@ class DatasetOperations:
 
         response = pipeline_response.http_response
 
-        if response.status_code not in [200, 400]:
+        if response.status_code not in [200]:
             if _stream:
                 response.read()  # Load the body in memory and close the socket
             map_error(status_code=response.status_code, response=response, error_map=error_map)
             raise HttpResponseError(response=response)
 
-        deserialized = None
-        if response.status_code == 200:
-            if response.content:
-                deserialized = response.json()
-            else:
-                deserialized = None
+        if response.content:
+            deserialized = response.json()
+        else:
+            deserialized = None
 
         if cls:
-            return cls(pipeline_response, deserialized, {})  # type: ignore
+            return cls(pipeline_response, cast(List[JSON], deserialized), {})  # type: ignore
 
-        return deserialized  # type: ignore
+        return cast(List[JSON], deserialized)  # type: ignore
 
     @distributed_trace
     def query(self, **kwargs: Any) -> None:  # pylint: disable=inconsistent-return-statements
@@ -685,6 +701,73 @@ class DatasetOperations:
 
         if cls:
             return cls(pipeline_response, None, {})  # type: ignore
+
+    @distributed_trace
+    def view(self, *, dataset_name: str, **kwargs: Any) -> List[JSON]:
+        """View a dataset.
+
+        View a dataset.
+
+        :keyword dataset_name: Required.
+        :paramtype dataset_name: str
+        :return: list of JSON object
+        :rtype: list[JSON]
+        :raises ~azure.core.exceptions.HttpResponseError:
+
+        Example:
+            .. code-block:: python
+
+                # response body for status code(s): 200
+                response == [
+                    {
+                        "description": "str",  # Required.
+                        "name": "str",  # Required.
+                        "version": 0  # Required.
+                    }
+                ]
+        """
+        error_map = {
+            401: ClientAuthenticationError,
+            404: ResourceNotFoundError,
+            409: ResourceExistsError,
+            304: ResourceNotModifiedError,
+        }
+        error_map.update(kwargs.pop("error_map", {}) or {})
+
+        _headers = kwargs.pop("headers", {}) or {}
+        _params = kwargs.pop("params", {}) or {}
+
+        cls: ClsType[List[JSON]] = kwargs.pop("cls", None)
+
+        _request = build_dataset_view_request(
+            dataset_name=dataset_name,
+            headers=_headers,
+            params=_params,
+        )
+        _request.url = self._client.format_url(_request.url)
+
+        _stream = False
+        pipeline_response: PipelineResponse = self._client._pipeline.run(  # pylint: disable=protected-access
+            _request, stream=_stream, **kwargs
+        )
+
+        response = pipeline_response.http_response
+
+        if response.status_code not in [200]:
+            if _stream:
+                response.read()  # Load the body in memory and close the socket
+            map_error(status_code=response.status_code, response=response, error_map=error_map)
+            raise HttpResponseError(response=response)
+
+        if response.content:
+            deserialized = response.json()
+        else:
+            deserialized = None
+
+        if cls:
+            return cls(pipeline_response, cast(List[JSON], deserialized), {})  # type: ignore
+
+        return cast(List[JSON], deserialized)  # type: ignore
 
 
 class DocumentsOperations:
