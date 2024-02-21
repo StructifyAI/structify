@@ -1,5 +1,4 @@
 # structifyai
-==================
 ![docs](https://readthedocs.org/projects/structify/badge/?version=latest)
 
 Unify all your unstructured knowledged into one structured source.
