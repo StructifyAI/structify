@@ -5,6 +5,7 @@
 # --------------------------------------------------------------------------
 
 from typing import Any
+
 from azure.core.pipeline import policies
 
 VERSION = "unknown"

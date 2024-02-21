@@ -27,26 +27,42 @@
 # pylint: skip-file
 # pyright: reportUnnecessaryTypeIgnoreComment=false
 
+from base64 import b64decode, b64encode
 import calendar
-import codecs
 import datetime
 import decimal
 import email
+from enum import Enum
 import json
 import logging
 import re
 import sys
-from base64 import b64decode, b64encode
-from enum import Enum
-from typing import IO, Any, AnyStr, Callable, Dict, List, Mapping, MutableMapping, Optional, Type, TypeVar, Union, cast
+import codecs
+from typing import (
+    Dict,
+    Any,
+    cast,
+    Optional,
+    Union,
+    AnyStr,
+    IO,
+    Mapping,
+    Callable,
+    TypeVar,
+    MutableMapping,
+    Type,
+    List,
+    Mapping,
+)
 
 try:
     from urllib import quote  # type: ignore
 except ImportError:
     from urllib.parse import quote
-
 import xml.etree.ElementTree as ET
+
 import isodate  # type: ignore
+
 from azure.core.exceptions import DeserializationError, SerializationError
 from azure.core.serialization import NULL as CoreNull
 
