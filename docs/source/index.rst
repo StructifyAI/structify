@@ -4,9 +4,16 @@ Welcome to Structify!
 Introduction
 ------------
 
-Welcome! Have too much unstructured information? Want some structure. Structify is here to help. We have numerous
-API endpoints for the sole purpose of structifying your data. We have a python client library, and a `Rest API </rest_docs>`_
+In reading the Structify API docs, you've taken your first step towards data independence! 
+By using the API, you will see how you can automatically source datasets, structure information, and run analytics. 
+This documentation will guide you through the process of using the Structify API to access, create, and manipulate your data.
+Soon, you will see how much fun it is to be structifying your data. 
+We have a python client library, and a `Rest API </rest_docs>`_
 
+
+Let's get started!
+
+First, install the python client library using pip:
 .. code-block:: bash
 
    pip install structifyai
@@ -37,7 +44,9 @@ Tutorials
 .. toctree::
    :caption: Tutorials
 
-   examples/example1
+   Finding & Tagging Your Network <examples/example1>
+   Structifying Documents <examples/example2>
+
 
 Indices and tables
 -------------------
