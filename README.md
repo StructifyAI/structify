@@ -1,5 +1,6 @@
+![Logo](assets/logo.png | width=100)
+
 # structifyai
-![Logo](assets/logo.png)
 ![docs](https://readthedocs.org/projects/structify/badge/?version=latest)
 [docs link](https://structify.readthedocs.io/en/latest/)
 Unify all your unstructured knowledged into one structured source.
