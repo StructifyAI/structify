@@ -1,3 +1,5 @@
+.. _quickstart:
+
 Quickstart Guide
 ================
 Datasets on demand for you or your AI tool in three easy steps.
@@ -8,7 +10,7 @@ Datasets on demand for you or your AI tool in three easy steps.
 
 Our documentation will guide you through the process of using the Structify API to access, create, and manipulate your data.
 Soon, you will see how much fun it is to be structifying your data. 
-We have a python client library, and a `Rest API </rest_docs>`_
+We have a python client library, and we are working on releasing a `Rest API </rest_docs>`_
 
 .. _Installation:
 
@@ -38,7 +40,7 @@ Anytime you want to use the Structify Python library, you'll need to import it:
 
 Getting an API Key
 ------------------
-We are early, so it is important to us to develop a relationship with all our users. That said, the quickest way to secure an API key is to `email us <mailto:team@structify.ai>` with your name, email, and a brief description of your use case. We will send you back an API key and your account details.
+We are early, so it is important to us to develop a relationship with all our users. That said, the quickest way to secure an API key is to `email us <mailto:team@structify.ai>`_ with your name, email, and a brief description of your use case. We will send you back an API key and your account details.
 
 Alternatively, you can book a time for a detailed guided tour of our API and get an API key at the end of the session. Please find a time to meet via `our Calendly <https://calendly.com/ronakgandhi/structify-demo>`_.
 
@@ -51,6 +53,7 @@ Our API recognizes two types of users: business and personal. Both have organiza
 Create Your First Dataset
 -------------------------
 You can create a dataset with two quick successive API calls:
+
 #. Define a schema using ``client.dataset.schema.user_create`` or ``client.dataset.schema.llm_create``.
 #. Specify the source to populate the dataset from with ``client.dataset.create``.
 

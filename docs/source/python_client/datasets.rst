@@ -138,10 +138,10 @@ And the output will look like this:
     You can edit the schema that is returned if it is missing something you need. In that case, you can use `client.dataset.schema.modify` to adjust the schema.
 
 
-.. _Populating-Datasets:
+.. _populating-datasets:
 
-Populating Your Dataset
------------------------
+Populating Your Datasets
+------------------------
 Once you have blueprinted your dataset by creating a schema, you can now use Structify's research agents to collect data to fill your dataset.
 
 For most datasets, you are going to want to user our scraper agents to collect data from the web. You can use `client.dataset.create` to populate a dataset with an initial batch of data. This API call requires the following:
@@ -164,9 +164,9 @@ Here's an example of an API call to populate that employees dataset with data fr
 
 Populating Datasets from Documents
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Sometimes, you will want to collect data from documents, such as PDFs or PNGs. You can use the `client.dataset.create` off of documents as well. 
+Sometimes, you will want to collect data from documents, such as PDFs or PNGs. You can use the `client.dataset.create` endpoint off of documents as well. 
 
-We'll walk you through the process to uploading documents and such in the :doc:`documents` section. Or you can check out the tutorials at :doc:`examples/example2`.
+We'll walk you through the process to uploading documents and such in the :doc:`documents` section. Or you can check out the tutorials at :doc:`source/examples/example2`.
 
 
 Adjusting Credit Usage per Populate Request 

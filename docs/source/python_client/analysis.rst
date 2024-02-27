@@ -6,7 +6,7 @@ Analyzing Your Datasets
 Overview
 --------
 
-Part of the advantages to using Structify as a backend is the automatic powering of advanced analytis on top of your custom datasets. Currently, Structify powers the following:
+Part of the advantages to using Structify as a backend is the automatic powering of advanced analytics on top of your custom datasets. Currently, Structify powers the following:
 
 #. :ref:`Creating Custom Tags for Data <tagging>`
 #. :ref:`Sorting Data along Any Axis <sorting>`
@@ -59,20 +59,6 @@ To use this endpoint, you would call the following:
         }
     }
     client.analysis.backsource(dataset=news, target=target_datapoint)
-
-.. code-block:: python
-    
-    target_datapoint = {
-        entity: {
-            "name": "George Washington University",
-            "table": {
-                "name" : "professors",
-                "columns" : ["name", "title", "department", "email", "phone", "office"],
-                "rows" : ["name": "John Smith", "title": "Chair Emeritus", "department": "Biology"]
-            }
-        }
-    }
-    client.analysis.backsource(dataset = news, target = target_datapoint)
 
 In this example, the API is able to produce the backsourcing for multiple sources that were used to validate the data associated for the professor John Smith at George Washington University.
 

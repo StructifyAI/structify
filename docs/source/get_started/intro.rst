@@ -53,7 +53,7 @@ And just like that, you've gathered your first dataset using Structify.
 
 Resources
 ---------
-* Check out the API Reference :doc:`more/apiref`.
+* Check out the API Reference :ref:`api-ref`.
 * View the `current API Status <https://structify.statuspage.io/>`_.
 * `Email us <mailto:team@structify.ai>`_ with any questions or comments.
 * Join our developer community on `Discord <https://discord.gg/structify>`_.

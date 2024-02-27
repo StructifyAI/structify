@@ -7,14 +7,14 @@ Jump Right In
 -------------
 If you're ready to start structifying, you can get started by visiting the following pages:
 
-* :doc:`<get_started/quickstart>`
-* :doc:`<examples/examplehome>`
-* :doc:`<more/apiref>`
+* :ref:`quickstart`
+* :ref:`examples-home`
+* :ref:`api-ref`
 
 Explore the Key Endpoints
 -------------------------
 By using the Structify API, you can automatically collect datasets, structure information from various sources, and run analytics on your datasets.
 
-    * :ref:`Populating Datasets`
-    * :ref:`Structuring Documents`
-    * :ref:`Analyzing Datasets`
+* :ref:`Populating-Datasets`
+* :ref:`Structuring Documents`
+* :ref:`Analyzing Datasets`

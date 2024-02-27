@@ -13,7 +13,7 @@ When you have a large dataset, it can be difficult to find the specific piece of
 
 Viewing Specific Parts of Your Datasets 
 ---------------------------------------
-The simplest method is to allow users to view specific parts of the dataset that they are interested in. This is a simple method, but it can be very effective if the dataset is small and the user knows what they are looking for. For example, if want to allow users to see the names of the schools that each person attended and their graduation date in their employees dataset, we could create the following view:
+The simplest method is to allow users to view specific parts of the dataset that they are interested in. This method can be very effective if the dataset is small and the user knows what they are looking for. For example, if want to allow users to see the names of the schools that each person attended and their graduation date in their employees dataset, we could create the following view:
 
 .. code-block:: python
 
@@ -56,7 +56,7 @@ Natural Language Search
 -----------------------
 The most powerful method is to allow users to ask questions in natural language and have the system return the relevant data. This endpoint is powered by Structify's LLM agents. While the most complex method, it is allows for the most flexible and user-friendly experience.
 
-If we wanted to power users to search for employees by describing the type of school they attended (e.g. "Ivy League tier schools" or "liberal arts collegs in California"), we could create the following function:
+If we wanted to power users to search for employees by describing the type of school they attended (e.g. "Ivy League tier schools" or "liberal arts colleges in California"), we could create the following function:
 
 .. code-block:: python
 

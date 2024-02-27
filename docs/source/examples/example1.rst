@@ -1,5 +1,9 @@
+Monitoring Changes in Datasets
+==============================
+Using the Structify API, you can easily track changes in datasets over time and get notified when changes occur. This is helpful to keep up to date on information that changes frequently in large scale, such as company board members, executive team, or other personnel changes.
+
 Tracking Private Company Board Members
-======================================
+--------------------------------------
 
 In this tutorial, imagine you are intested in keeping tabs on who is on the board of various private companies.
 Let's say furthermore, you are only interested in companies that are in the technology sector.
@@ -11,6 +15,6 @@ The goal being to regularly check if there have been any changes. Of course, sin
 Structify changes all of that and allows you to easily collect this information and track any changes.
 
 Step 1: Create a Board Members Dataset
----------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 First, we need to create a dataset to store the board members of each company. Here, you can
