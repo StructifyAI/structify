@@ -1,0 +1,4 @@
+- activate the virtualenv (venv)
+- cd docs
+- `make html` inside client/docs
+- python -m http.server --directory build/html/

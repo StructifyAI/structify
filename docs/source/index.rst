@@ -1,58 +1,55 @@
 Welcome to Structify!
-========================================
-
-Introduction
-------------
-
-In reading the Structify API docs, you've taken your first step towards data independence! 
-By using the API, you will see how you can automatically source datasets, structure information, and run analytics. 
-This documentation will guide you through the process of using the Structify API to access, create, and manipulate your data.
-Soon, you will see how much fun it is to be structifying your data. 
-We have a python client library, and a `Rest API </rest_docs>`_
+=====================
 
 
-Let's get started!
-
-First, install the python client library using pip:
-.. code-block:: bash
-
-   pip install structifyai
-
-.. code-block:: python
-
-   from structifyai import Structify
-   client = Structify()
-   client.datasets.list()
-
+Get Started with Structify
+--------------------------
 .. toctree::
+   :caption: Get Started
+   :maxdepth: 1
    
-   Getting Started <getting_started>
+   Overview <get_started/overview>
+   Intro <get_started/intro>
+   Quickstart <get_started/quickstart>
 
 
-Endpoints
-------------
+Check Out Our Capabilities
+--------------------------
 .. toctree::
-   :caption: Endpoints
+   :caption: Guide
    :maxdepth: 1
 
-   python_client/server
-   python_client/datasets
-   python_client/documents
+   Creating Datasets <python_client/datasets>
+   Searching Datasets <python_client/search>
+   Using Documents <python_client/documents>
+   Notifications <python_client/notifications>
+   Analysis Tools <python_client/analysis>
 
-Tutorials
-------------
+
+Learn from Examples
+-------------------
 .. toctree::
    :caption: Tutorials
+   :maxdepth: 2
 
-   Finding & Tagging Your Network <examples/example1>
+   Making the Internet Your Database <examples/example0>
+   Monitoring Changes in Datasets <examples/example1>
    Structifying Documents <examples/example2>
+   Custom Tagging Your Datasets <examples/example3>
+ 
 
+.. Indices and tables
+.. -------------------
+.. * :ref:`genindex`
+.. * :ref:`modindex`
+.. * :ref:`search`
 
-Indices and tables
--------------------
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+Read More
+---------
 .. toctree::
-   :caption: Further Reading
+   :caption: More
+   :maxdepth: 1
+
+   API Reference <more/apiref>
+   FAQ <more/faq>
+   Changelog <more/changelog>

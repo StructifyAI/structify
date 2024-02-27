@@ -1,4 +1,4 @@
 Server
---------------------
+======
 
-.. autofunction:: structifyai.operations.ServerOperations.version
+.. .. autofunction:: structifyai.operations.ServerOperations.version

@@ -49,7 +49,7 @@ We associate the documents with your account (or your user account), such that m
 
 Step 2: Create a Relevant Dataset
 ----------------------------------
-Now, we have to blueprint the schema of the dataset that we are interested in creating from these documents.
+Next, we have to blueprint the schema of the dataset that we are interested in creating from these documents.
 In this example, we will use the LLM generate method to create a dataset schema that will be used to structure the information from the pitch decks.
 
 .. code-block:: python
@@ -65,10 +65,12 @@ In this example, we will use the LLM generate method to create a dataset schema 
     await pitchdecks.status() == "complete"
     view = client.datasets.schema.view(dataset_name = pitchdecks.name)
     print(view)
-*Note: If you want to edit the LLM-generated schema, you can use the dataset schema modify endpoint to do so.*
+
+.. note:: 
+    If you want to edit the LLM-generated schema, you can use the dataset schema modify endpoint to do so.
 
 Step 3: Populate the Dataset using the Documents
------------------------------------------------
+-------------------------------------------------
 Now that we have the dataset schema, we can populate the dataset with the information from the pitch decks.
 
 .. code-block:: python
@@ -80,7 +82,7 @@ Now that we have the dataset schema, we can populate the dataset with the inform
 
 Step 4: Query the Documents
 ---------------------------
-Now, let's assume you have a user that wants to search through the documents. 
+Let's assume you have a user that wants to search through the documents. 
 Once you've used the populate method to create the dataset, you can use the query method to search through the documents.
 
 .. code-block:: python
