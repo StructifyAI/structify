@@ -1,1 +1,6 @@
+aphinx
 sphinxawesome_theme
+sphinxcontrib-details-directive
+sphinx-autoapi
+sphinx-ext-doctest
+sphinx-ext-autodoc
