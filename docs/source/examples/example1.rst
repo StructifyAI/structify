@@ -83,3 +83,4 @@ Now that we have a dataset to store the board members information, we want to se
         frequency = "weekly",
         time = "2024-04-01 09:30:00")
 
+With this setup, you will be able to keep track of the board members of various private companies in the technology sector, and get notified when that information changes such as board members starting or leaving posts.
