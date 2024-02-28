@@ -54,4 +54,4 @@ Creating datasets from documents is quite simple. You just use the `client.datas
     client = Structify()
     client.datasets.create(name = employees, source = [/path/to/employees.csv, /path/to/employees.pdf], agent_number = 1)
 
-And just like that you've created a dataset from your documents. You can then run our :doc:`analysis </analysis>` tools on the dataset to extract the data you need.
+And just like that you've created a dataset from your documents. You can then run our :doc:`analysis` tools on the dataset to extract the data you need.

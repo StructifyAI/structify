@@ -3,4 +3,7 @@
 API Reference
 =============
 
-This is where Alex is going to put all the auto-generated docs from the python client
+This page contains auto-generated API reference documentation for the Structify library.
+
+* :ref:`genindex`
+* :ref:`modindex`

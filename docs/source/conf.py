@@ -39,8 +39,8 @@ html_title = "Structify"
 autoapi_dirs = ["../../../"]
 html_baseurl = "/docs/"
 html_static_path = ["_static/"]
-html_logo = "_static/logo.jpeg"
-html_favicon = "_static/favicon.ico"
+html_logo = "_static/webclip.png"
+html_favicon = "_static/favicon.png"
 
 html_js_files = ["/docs"]
 
