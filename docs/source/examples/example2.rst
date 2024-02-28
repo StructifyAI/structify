@@ -7,6 +7,8 @@ Extracting Company Information from Pitch Decks
 -----------------------------------------------
 This example will walk through the process of uploading pitch decks and extracting the company name, industry, founders, investors, and funding amount from each deck.
 
+.. _document-example:
+
 Step 1: Upload the Relevant Documents
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Structify allows you to upload documents in a variety of formats, including PDFs, Word documents, and Powerpoint presentations.

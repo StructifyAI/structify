@@ -166,7 +166,7 @@ Populating Datasets from Documents
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sometimes, you will want to collect data from documents, such as PDFs or PNGs. You can use the `client.dataset.create` endpoint off of documents as well. 
 
-We'll walk you through the process to uploading documents and such in the :doc:`documents` section. Or you can check out the tutorials at :doc:`source/examples/example2`.
+We'll walk you through the process to uploading documents and such in the :doc:`documents` section. Or you can check out the tutorials at :ref:`document-example`.
 
 
 Adjusting Credit Usage per Populate Request 
@@ -197,10 +197,10 @@ You can set the dataset to refresh one-time, on a recurring schedule, or refresh
     agent_ids = [agent['id'] for agent in agents]
 
     # Then, you can refresh the dataset. Note, you could set the type to "recurring" or "continuous" if you want to refresh the dataset on a schedule or continuously.
-    client.dataset.refresh(namne = "employees", id = agent_ids, type = "one-time")
+    client.dataset.refresh(name = "employees", id = agent_ids, type = "one-time")
 
 .. note::
-    If you want to refresh the dataset on a schedule, you have to pass an additional time and frequency parameter to the API call. The time parameter is a string in the format "YYYY-MM-DD HH:MM:SS". The frequency parameter is a string that can be "daily", "weekly", "biweekly," "monthly", or "yearly".
+    If you want to refresh the dataset on a schedule, you have to pass an additional time and frequency parameter to the API call. The time parameter is a string in the format "YYYY-MM-DD HH:MM:SS", where the date determine the start date and the time represents the time the refresh will run. The frequency parameter is a string that can be "daily", "weekly", "biweekly," "monthly", or "yearly".
 
 .. These are all folded into the client. So just use
 .. .. code-block:: python
