@@ -4,7 +4,7 @@ In many cases, a wealth of unstructured data lies within documents without set f
 
 Uploading Documents
 ---------------------
-You can upload documents to Structify using `client.documents.upload` and then specifying the old file path and the new file path. The new file path is the path where the file will be stored in Structify.
+You can upload documents to Structify using ``client.documents.upload`` and then specifying the old file path and the new file path. The new file path is the path where the file will be stored in Structify.
 
 .. code-block:: python
 
@@ -45,7 +45,7 @@ In the meantime, we recommend converting all your documents to either PDFs or im
 
 Extracting Data from Documents
 -------------------------------
-Creating datasets from documents is quite simple. You just use the `client.datasets.create` method and specify the document file path or paths you want to include in the dataset.
+Creating datasets from documents is quite simple. You just use the ``client.datasets.create`` method and specify the document file path or paths you want to include in the dataset.
 
 .. code-block:: python
 

@@ -135,7 +135,7 @@ And the output will look like this:
 
 
 .. tip::
-    You can edit the schema that is returned if it is missing something you need. In that case, you can use `client.dataset.schema.modify` to adjust the schema.
+    You can edit the schema that is returned if it is missing something you need. In that case, you can use ``client.dataset.schema.modify`` to adjust the schema.
 
 
 .. _populating-datasets:
@@ -144,7 +144,7 @@ Populating Your Datasets
 ------------------------
 Once you have blueprinted your dataset by creating a schema, you can now use Structify's research agents to collect data to fill your dataset.
 
-For most datasets, you are going to want to user our scraper agents to collect data from the web. You can use `client.dataset.create` to populate a dataset with an initial batch of data. This API call requires the following:
+For most datasets, you are going to want to user our scraper agents to collect data from the web. You can use ``client.dataset.create`` to populate a dataset with an initial batch of data. This API call requires the following:
 
 - **name:** The name of the dataset you want to populate
 - **source:** A description of the sources or types of sources you want the agent to use (e.g. “LinkedIn” or “news articles”)
@@ -160,11 +160,11 @@ Here's an example of an API call to populate that employees dataset with data fr
     client.dataset.create(name = "employees", source = "LinkedIn", agent_number = 5)
 
 .. tip::
-    You can check the status of the populate request through `employees.status()` or `print(client.dataset.list("employees"))` to see the status object.
+    You can check the status of the populate request through ``employees.status()`` or ``print(client.dataset.list("employees"))`` to see the status object.
 
 Populating Datasets from Documents
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Sometimes, you will want to collect data from documents, such as PDFs or PNGs. You can use the `client.dataset.create` endpoint off of documents as well. 
+Sometimes, you will want to collect data from documents, such as PDFs or PNGs. You can use the ``client.dataset.create`` endpoint off of documents as well. 
 
 We'll walk you through the process to uploading documents and such in the :doc:`documents` section. Or you can check out the tutorials at :ref:`document-example`.
 
@@ -180,7 +180,7 @@ Populating datasets with Structify's research agents will be the main process th
 - **source_limit:** A set amount of sources that the scraper will check. This parameter is designed to limit your request to save credits, if needed.
 
 .. tip::
-    Check `client.account.credits_remaining()` periodically to see how many credits you have left.
+    Check ``client.account.credits_remaining()`` periodically to see how many credits you have left.
 
 .. _Refreshing-Dataset:
 
@@ -204,7 +204,7 @@ You can set the dataset to refresh one-time, on a recurring schedule, or refresh
 
 Bonus: Sharing Datasets
 -----------------------
-Oftentimes, you will want to share your dataset with others. You can use the `client.dataset.share` API call to share your dataset with others. This API call requires the following:
+Oftentimes, you will want to share your dataset with others. You can use the ``client.dataset.share`` API call to share your dataset with others. This API call requires the following:
 
 * **name:** The name of the dataset you want to share
 * **share_method:** The method of sharing the dataset. This can be "public" or "private". 
@@ -213,7 +213,7 @@ Oftentimes, you will want to share your dataset with others. You can use the `cl
 * **emails:** (optional) A list of emails that you want to share the dataset with.
 
 .. note::
-    If you want to share the dataset with specific users, you can use the "private" method and pass a list of either `user_ids`` to the "users" parameter. If the target recipients are not users, you can pass a list of emails to the "emails" parameter, which will send them an email link to create an account and view the dataset.
+    If you want to share the dataset with specific users, you can use the "private" method and pass a list of either ``user_ids`` to the "users" parameter. If the target recipients are not users, you can pass a list of emails to the "emails" parameter, which will send them an email link to create an account and view the dataset.
 
 Here's an example that walks through sharing the employees dataset with various co-workers who do not have Structify accounts:
 
