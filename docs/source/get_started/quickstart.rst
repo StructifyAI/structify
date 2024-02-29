@@ -9,8 +9,8 @@ Datasets on demand for you or your AI tool in three easy steps.
 #. :ref:`Create-Your-First-Dataset`
 
 Our documentation will guide you through the process of using the Structify API to access, create, and manipulate your data.
-Soon, you will see how much fun it is to be structifying your data. 
-We have a python client library, and we are working on releasing a `Rest API </rest_docs>`_
+When you create a dataset, Structify spins up AI agents to populate your custom schema by indexing information from the sources you specify. Soon, you will see how much fun it is to "structify" your data. 
+We have a python client library, and we are working on releasing a `Rest API </rest_docs>`_.
 
 .. _Installation:
 
