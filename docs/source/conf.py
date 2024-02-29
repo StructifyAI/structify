@@ -10,8 +10,8 @@ import sys
 sys.path.insert(0, "/home/dev/src/prospero/client/structify/")
 
 project = "Structify"
-copyright = "2024, Alex Reichenbach"
-author = "Alex Reichenbach"
+copyright = "2024, Alex Reichenbach & Ronak Gandhi"
+author = "Alex Reichenbach & Ronak Gandhi"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -19,14 +19,14 @@ author = "Alex Reichenbach"
 extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.autodoc",
-    "autoapi.extension",
+    # "autoapi.extension",
     # "sphinx.ext.autosectionlabel",
     # "sphinxcontrib.redoc",
     # "sphinx.ext.napoleon",
     # "sphinx.ext.autosummary",
 ]
 
-templates_path = ["/docs/_templates"]
+templates_path = ["/docs/source/_templates"]
 exclude_patterns = []
 pygments_style = "sphinx"
 
@@ -34,12 +34,25 @@ pygments_style = "sphinx"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "sphinxawesome_theme"
-extensions += ["sphinxawesome_theme.highlighting"]
+extensions += ["sphinxawesome_theme.highlighting", "sphinxcontrib.details.directive"]
 html_title = "Structify"
 autoapi_dirs = ["../../../"]
 html_baseurl = "/docs/"
 html_static_path = ["_static/"]
-html_logo = "_static/logo.jpeg"
-html_favicon = "_static/favicon.ico"
+html_logo = "_static/webclip.png"
+html_favicon = "_static/favicon.png"
 
 html_js_files = ["/docs"]
+
+"""
+# Configuration for the sidebar
+html_sidebars = {
+    '**': [
+        'sidebar.html',  # Main sidebar
+        'globaltoc.html',  # Table of contents
+        'localtoc.html',   # Subsection TOCs
+        'searchbox.html',  # Search box
+    ]
+}
+
+"""
