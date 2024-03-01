@@ -31,7 +31,7 @@ def build_workflows_list_request(**kwargs: Any) -> HttpRequest:
     # Construct URL
     _url = "/workflows/list"
 
-    return HttpRequest(method="POST", url=_url, **kwargs)
+    return HttpRequest(method="GET", url=_url, **kwargs)
 
 
 class WorkflowsOperations:

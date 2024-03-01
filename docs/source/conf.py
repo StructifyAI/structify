@@ -19,11 +19,11 @@ author = "Alex Reichenbach & Ronak Gandhi"
 extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.autodoc",
-    # "autoapi.extension",
+    "autoapi.extension",
+    "sphinx.ext.autosummary",
     # "sphinx.ext.autosectionlabel",
     # "sphinxcontrib.redoc",
     # "sphinx.ext.napoleon",
-    # "sphinx.ext.autosummary",
 ]
 
 templates_path = ["/docs/source/_templates"]

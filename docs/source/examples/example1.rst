@@ -25,7 +25,7 @@ Or you could want to know who in your network has experience in "Python" or "Sal
 With Structify, getting this information has never been easier.
 
 Step 1: Create a Network Dataset
------------------------
+----------------------------------------------
 First, you are going to want to initialize a dataset to represent your network. You first do this by defining the schema for the dataset. 
 The schema is a JSON object that defines the structure of the dataset. Remember that you are going to need to include a description for each entity, table, and column.
 
@@ -111,7 +111,7 @@ The schema is a JSON object that defines the structure of the dataset. Remember 
 *Note that you can also use client.dataset.llm_create(text=prompt) to have our LLM generate your schema for you.*
 
 Step 2: Populate the Network Dataset
------------------------
+----------------------------------------------
 Next, you are going to use the populate endpoint to add data to the dataset. Here, we use the scraper endpoint to grab the data from the Web.
 Since information about your network can easily be found via LinkedIn, we are going to limit the sources to LinkedIn.
 There are other limitations you can put in place such as limiting the tables you want to grab information for.
@@ -133,7 +133,7 @@ Limiting where applicable is a good practice to save your credits.
     print("The network dataset has finished populating from LinkedIn.")
 
 Step 3: Search the Dataset for Contacts with Domain Expertise
------------------------
+---------------------------------------------------------------------
 Now that you have a dataset that represents your network, you can use the various endpoints to find contacts with domain expertise.
 There are two main ways to do this:
 
@@ -207,7 +207,7 @@ This endpoint lets you filter for not specifically defined fields, such as "sale
     )
 
 Step 4: Regularly Refresh the Dataset
------------------------
+---------------------------------------------------------------------
 If you want to ensure the dataset is up to date, use the refresh endpoint to update the dataset with the latest information from the Web.
 
 .. code-block:: python
