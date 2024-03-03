@@ -71,6 +71,6 @@ Frequently Asked Questions
 
 .. details:: Where can I get help with using the API?
     
-    We recommend you first check out `our developer community on Discord <https://discord.gg/structify>`_. 
+    We recommend you first check out `our developer community on Discord <https://discord.gg/tqxmr2Mj>`_. 
     
     If you can't find an answer there, we're happy to help you out if you send a note to team@structify.ai.

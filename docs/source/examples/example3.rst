@@ -94,10 +94,10 @@ The schema is a JSON object that defines the structure of the dataset. Remember 
     }
 
     # Create a network dataset
-    network = client.dataset.user_create(json=schema)
+    network = client.dataset.create(schema)
 
 .. note:: 
-    You can also use client.dataset.llm_create(text=prompt) to have our LLM generate your schema for you.*
+    You can also use client.dataset.llm-create(prompt) to have our LLM generate your schema for you.
 
 Step 2: Populate the Network Dataset
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -110,11 +110,11 @@ Limiting where applicable is a good practice to save your credits.
 .. code-block:: python
 
     # Populate the network dataset
-    scraper = client.populate.scraperagent.create(
-        dataset_name=network.name,
-        sources=["linkedin"],
+    scraper = client.agents.create(
+        dataset = network.name,
+        sources = Internet.LinkedIn,
         number = 3 # Limit the number of active agents running to grab this information to 3, another form of limiting. The more agents, the faster the query will process.
-        tables=["jobs", "profile"]
+        tables = ["jobs", "profile"]
     )
 
     # Wait for the agents to finish running
@@ -133,7 +133,7 @@ If you've defined the schema with defined industries, you can use the view endpo
 
     # Search for contacts who have worked at companies in the target industry
     aiInfra_contacts = client.dataset.view(
-        dataset_name=network.name,
+        name=network.name,
         # If you are looking for something with a certain value, you can specify it in a JSON like the following:
         inputs = {
             "entity": 
@@ -176,8 +176,8 @@ This endpoint lets you filter for not specifically defined fields, such as "sale
 .. code-block:: python
 
     # Filter the dataset for contacts who have worked at companies in the target role
-    sales_contacts = client.dataset.analysis.filter(
-        dataset_name=network.name,
+    sales_contacts = client.analysis.filter(
+        name=network.name,
         # Here you specify that level of the dataset you are filtering through and where it is
         target_type = "column"
         target_location = {
@@ -202,11 +202,13 @@ If you want to ensure the dataset is up to date, use the refresh endpoint to upd
 .. code-block:: python
 
     # Refresh the network dataset
-    refresh = client.populate.scraperagent.refresh(
-        dataset_name=network['name'],
-        agent_id=scraper.id
+    refresh = client.dataset.refresh(
+        name = network['name'],
+        id = scraper.id,
         # You can also specify the frequency of the refresh. The below will refresh the dataset every day at 9am.
-        scheduling = {"time": 9, "regularity" : 1}
+        type = recurring,
+        frequency = "daily",
+        time = "2024-04-01 09:00:00"
     )
 
 .. note:: 

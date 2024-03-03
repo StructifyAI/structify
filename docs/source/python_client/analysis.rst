@@ -25,7 +25,7 @@ A common practice is to sort datasets by industry. For example, if you are hirin
 .. code-block:: python
 
     industry_tags = ['healthcare', 'retail', 'finance', 'technology', 'education', 'government', 'non-profit', 'other']
-    client.analysis.filter(dataset=candidates, tags=industry_tags, tag_description="a list of possible industries that the candidate has experience in")
+    Structify.analysis.filter(dataset=candidates, tags=industry_tags, tag_description="a list of possible industries that the candidate has experience in")
 
 
 .. _sorting:
@@ -36,7 +36,7 @@ We allow for you to sort your data along any axis (subjective or objective). For
 
 .. code-block:: python
 
-    client.analysis.sort(dataset=news, axis=['sentiment', 'topic'], sort_description="sorts the news by sentiment in order of positive association with our client George Washington University")
+    Structify.analysis.sort(dataset=news, axis=['sentiment', 'topic'], sort_description="sorts the news by sentiment in order of positive association with our client George Washington University")
 
 .. _backsourcing:
 
@@ -58,7 +58,7 @@ To use this endpoint, you would call the following:
             }
         }
     }
-    client.analysis.backsource(dataset=news, target=target_datapoint)
+    Structify.analysis.backsource(dataset=news, target=target_datapoint)
 
 In this example, the API is able to produce the backsourcing for multiple sources that were used to validate the data associated for the professor John Smith at George Washington University.
 
@@ -82,6 +82,6 @@ If we wanted to get the confidence score for John Smith's email address, we woul
             }
         }
     }
-    client.analysis.confidence_score(dataset = news, target = target_datapoint)
+    Structify.analysis.confidence_score(dataset = news, target = target_datapoint)
 
 Now, you have the tools to be able to more deeply understand your datasets and derive insights from them.

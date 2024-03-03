@@ -47,20 +47,21 @@ Next, we will need to create a dataset to store the board members information. W
     # We will grab the schema from the uploaded CSV file
     df = pd.read_csv(client.documents.view(path = path/to/your/board_members_dataset))
     schema = df.dtypes.to_dict()
+    schema["name"] = "Board Members"
+    schema["description"] = "Dataset containing information about board members of private companies in the technology sector."
 
     # Now, we will create a dataset with the schema
-    board_members = client.datasets.schema.user_create(
-        name = "Board Members",
-        description = "A dataset to store board members information for companies in the technology sector",
-        schema = schema
-    )
+    board_members = client.datasets.create(schema)
 
-    # First, we're populating the dataset with the existing information
-        client.datasets.create(
+    # Here, we're populating the dataset with the existing information
+    client.agents.create(
         name = "Board Members",
-        sources = {"documents" : [path/to/your/board_members_dataset]}
-        agent_number = 1
+        sources = Documents.from_files[path/to/your/board_members_dataset]}
     )
+    Structify.it("Board Members")
+
+.. note::
+    We recommend only creating one agent to populate the dataset from documents. 
 
 Step 3: Set Up Regular Refreshes of the Dataset
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,10 +70,10 @@ Now that we have a dataset to store the board members information, we want to se
 .. code-block:: python
 
     # After getting the data from the uploaded CSV, we want to get the most recent information from the Internet sources.
-    client.datasets.create(
+    client.agents.create(
         name = "Board Members",
-        sources = {"internet sources" :["press releases", "company websites", "SEC filings"]},
-        agent_number = 10
+        sources = [Internet.SECFILINGS, Internet.PRESSRELEASES, Internet.COMPANYWEBSITES],
+        number = 10
     )
 
     # We will set up a refresh schedule to run every week at 9:30am
@@ -83,4 +84,22 @@ Now that we have a dataset to store the board members information, we want to se
         frequency = "weekly",
         time = "2024-04-01 09:30:00")
 
-With this setup, you will be able to keep track of the board members of various private companies in the technology sector, and get notified when that information changes such as board members starting or leaving posts.
+
+Step 4: Grab the Source of the Change
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Now that we have set up the dataset to be refreshed regularly, we want to be notified with the source attributed to any changes that occur. We can do this by setting up a notification that returns a backsource:
+
+.. code-block:: python
+
+    async def create_backsourced_notification(dataset_name, notification_details):
+        notification = client.notification.create(name=dataset_name, json=notification_details)
+
+        while True:
+            notification = client.notification.view(name=dataset_name, id=notification.id)
+            if notification.status == "processed":
+                change = client.notification.view(name=dataset_name, id=notification.id)
+                return client.analysis.backsource(name=dataset_name, target=change)
+            time.sleep(5)
+
+
+With this setup, you will be able to keep track of the board members of various private companies in the technology sector, and get notified with a source when that information changes such as board members starting or leaving posts.

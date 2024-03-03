@@ -1,6 +1,13 @@
 Welcome to Structify!
 =====================
-We power you to collect, enrich, and update your own custom datasets using generative AI. Structify allows you transform any information from document to web page into structured data.
+We power you to collect, enrich, and update your own custom datasets using generative AI. Structify allows you transform any information from document to web page into structured data with as little as four lines of code.
+
+.. code-block:: python
+
+   schema = {"name": "my_network", "description": "a collection of the work experience of the people I know" ...} # First, define the schema of your dataset as a dictionary
+   Structify.dataset.create(schema) # Next, create a dataset by passing the schema to our API
+   Structify.agents.create(name = "my_network", source = [Internet.LinkedIn, Documents.ContactCards]) # Then, create an agent to index information from defined sources for your dataset
+   Structify.it() # Finally, let our agents structify those sources into a dataset for you
 
 After reading our API documentation, you will be able to use our Python client to do things like:
 
@@ -10,15 +17,7 @@ After reading our API documentation, you will be able to use our Python client t
 * Automate notifications when a new job listing is posted that matches your criteria
 * Analyze the sentiment of a collection of up-to-date social media noise about your company or your clients
 
-...with the following three lines of code:
-
-.. code-block:: python
-   
-   schema = "put your dataset schema here" # First, define the schema of your dataset as a library
-   Structify.datasets.schema.user_create(name = "dataset_name", schema = schema) # Then, create a dataset frame
-   Structify.datasets.create(name = "dataset_name", source = "The entire Internet") # Finally, add data to your dataset using our AI agents
-
-It's that easy. Keep reading to learn more about how to use Structify to supercharge your team or an AI tool.
+Keep reading to learn more about how to use Structify to supercharge your team or an AI tool.
 
 Get Started with Structify
 --------------------------

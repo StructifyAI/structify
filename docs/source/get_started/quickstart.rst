@@ -33,7 +33,6 @@ Anytime you want to use the Structify Python library, you'll need to import it:
 .. code-block:: python
 
    from structifyai import Structify
-   client = Structify()
 
 
 .. _Getting-An-API-Key:
@@ -54,15 +53,14 @@ Create Your First Dataset
 -------------------------
 You can create a dataset with two quick successive API calls:
 
-#. Define a schema using ``client.dataset.schema.user_create`` or ``client.dataset.schema.llm_create``.
-#. Specify the source to populate the dataset from with ``client.dataset.create``.
+#. Define a schema using ``client.dataset.create`` or ``client.dataset.llm-create``.
+#. Specify the source to populate the dataset from with ``client.agents.create``.
 
 Here's an example of how you would make an API call to create a dataset:
 
 .. code-block:: python
    
    from structifyai import Structify
-   client = Structify()
 
    # Define a schema
    schema = {
@@ -132,13 +130,16 @@ Here's an example of how you would make an API call to create a dataset:
    }
 
    # Use the schema to create the dataset
-   books_dataset = client.dataset.user_create(json=schema)
+   books_dataset = Structify.dataset.create(schema)
 
-   #Specify the source to populate the dataset from
-   source = {"source": "Internet", "specification": "https://www.goodreads.com/"}
-   client.dataset.populate(books_dataset['id'], json=source)
+   # Specify the source to populate the dataset from as a Python Enum
+   source = Internet.Goodreads
+   Structify.agents.create(dataset = "books", source = source)
+
+   # Run the agent to populate the dataset
+   Structify.it("books")
 
 .. tip::
-   You could just as easily use the ``client.dataset.schema.llm_create`` method to create a dataset with a schema that is automatically generated from the description included in the example above.
+   You could just as easily use the ``client.dataset.llm-create`` method to create a dataset with a schema that is automatically generated from the description included in the example above.
 
 With that, you are on your way to structifying your data.

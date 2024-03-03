@@ -20,6 +20,7 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.autodoc",
     # "autoapi.extension",
+    "sphinx.ext.autosummary",
     # "sphinx.ext.autosectionlabel",
     # "sphinxcontrib.redoc",
     # "sphinx.ext.napoleon",

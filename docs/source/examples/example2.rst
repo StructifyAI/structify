@@ -62,12 +62,12 @@ In this example, we will use the LLM generate method to create a dataset schema 
     # This can be hard coded or a user input, if you want to get fancy
     prompt = "Create a dataset schema for grabbing information from pitch decks such as the company name, industry, founders, investors, and funding amount."
 
-    # Create the dataset
-    pitchdecks = client.datasets.llm_create(prompt=prompt)
+    # Create the dataset schema
+    pitchdecks = client.datasets.llm-create(prompt=prompt)
 
     # If you want to view the schema, you can do so by calling the view method
     await pitchdecks.status() == "complete"
-    view = client.datasets.schema.view(dataset_name = pitchdecks.name)
+    view = client.dataset.schema.view(name = pitchdecks.name)
     print(view)
 
 .. note:: 
@@ -79,10 +79,11 @@ Now that we have the dataset schema, we can populate the dataset with the inform
 
 .. code-block:: python
 
-    agent = client.populate.documentagent.create(
-        dataset_name = pitchdecks.name, 
+    agent = client.agents.create(
+        dataset = pitchdecks.name, 
         document_paths = ["newpath/deck1.pdf", "newpath/deck2.pdf"]
     )
+    Structify.it(pitchdecks.name)
 
 Step 4: Query the Documents
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -92,9 +93,9 @@ Once you've used the populate method to create the dataset, you can use the quer
 .. code-block:: python
 
     def query_pitchdecks(query):
-        response = client.dataset.analysis.query(dataset_name = pitchdecks.name, query = query)
+        response = client.analysis.query(dataset = pitchdecks.name, query = query)
         while response.status != "complete":
-            response = client.dataset.analysis.query.retrieve(response.id)
+            response = client.analysis.query.retrieve(response.id)
             time.sleep(5)
         print(response)
 
@@ -151,7 +152,7 @@ Next, you'll want to create a dataset schema based off the user query. This will
         prompt = "Create a dataset schema for answering the following questions: " + user_query
 
         # Create the dataset
-        dataset = client.datasets.llm_create(prompt=prompt)
+        dataset = client.datasets.llm-create(prompt=prompt)
 
         # If you want to view the schema, you can do so by calling the view method
         await client.dataset.status(name = dataset["name"]) == "complete"
@@ -167,12 +168,14 @@ Now that we have the dataset schema, we can populate the dataset with the inform
     async def populate_dataset(document_array, user_query):
         uploads = await upload_documents(document_array)
         dataset = create_dataset_schema(user_query)
-        agent = client.dataset.create(
+        agent = client.agents.create(
             name = dataset, 
-            source = uploads
+            source = Documents.from_files(uploads)
         )
+        Structify.it(dataset)
+
         # We have to wait for the dataset to be populated
-        await client.dataset.status(name = dataset) == "complete"
+        await Structify.it.status(name = dataset) == "complete"
         print("Dataset populated")
 
 Step 4: Answer the User Query

@@ -1,7 +1,7 @@
 Making the Internet Your Database
 =================================
 
-The central feature of Structify is powering individuals like you to structure unstructured data on the web. This is a powerful concept, and it's not just about making the web more structured. It's about making the web your database. Accessible whenever, wherever, and however you want. And always effortlessly up-to-date.
+The central feature of Structify is powering individuals like you to structure unstructured data on the web. It's a powerful tool that can transform the web into a database that's always up-to-date.
 
 Grabbing Relevant Press & News about Clients
 --------------------------------------------
@@ -61,7 +61,7 @@ First things first. We need a Structify dataset to store all this information. W
         ]
     }
 
-    client.dataset.schema.user_create(name = "client_press", schema = schema)
+    client.dataset.create(schema)
 
 Step 2: Add Clients
 ~~~~~~~~~~~~~~~~~~~~
@@ -84,7 +84,7 @@ Now, we are going to manually define the entities of the dataset. We will add a 
                 },
                 {
                     "name": "Taylor Swift",
-                    "description": "A singer-songwriter"
+                    "description": "Best-selling singer-songwriter worth over $1 billion"
                 }
             ]
         }
@@ -97,10 +97,10 @@ Now, we are going to use the Structify API to grab the latest press and news abo
 .. code-block:: python
 
     # In creating agents to populate the dataset, we have to specify the dataset name, the sources, and the number of agents.
-    client.dataset.create(
+    client.agents.create(
         name = "client_press",
-        sources = {"Internet": ["AP News", "The New York Times", "ESPN", "Twitter", "Instagram"]},
-        agents = 3)
+        sources = [Internet.NEWS, Internet.TWITTER, Internet.INSTAGRAM]
+        number = 3)
 
     agent_ids = []
     for agent in client.dataset.get(name = "client_press")["agents"]:
