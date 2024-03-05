@@ -28,6 +28,6 @@ In order to create a notification, users must specify the following details in a
         "condition": "value_added",
     }
 
-    notification = Structify.notification.create(name = "employees", json=notification_details)
+    notification = structify.notification.create(name = "employees", json=notification_details)
 
 This example outlines the creation of a webhook notification that will alert us anytime John Kim starts a new job. Specifically, the notification will be triggered when a new row is added to the jobs table in the John Kim entity.

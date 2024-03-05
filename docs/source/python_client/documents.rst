@@ -9,8 +9,9 @@ You can upload documents to Structify using ``client.documents.upload`` and then
 .. code-block:: python
 
     from structifyai import Structify
+    structify = Structify()
 
-    Structify.documents.upload(local = old_file_path, structify = new_file_path)
+    structify.documents.upload(local = old_file_path, remote = new_file_path)
 
 You can also bulk upload documents by specifying the old file paths and the new file paths by specifying them in a dictionary and passing the dictionary as a parameter.
 
@@ -44,12 +45,10 @@ In the meantime, we recommend converting all your documents to either PDFs or im
 
 Extracting Data from Documents
 -------------------------------
-Creating datasets from documents is quite simple. You just use the ``client.agents.create`` method and specify the document file path or paths you want to include in the dataset.
+Creating datasets from documents is quite simple. You just use the ``structify.agents.create`` method and specify the document file path or paths you want to include in the dataset.
 
 .. code-block:: python
 
-    from structifyai import Structify
-
-    Structify.agents.create(name = "employees", source = Documents.from_files(["/path/to/employee1.pdf", "/path/to/employee2.pdf"])
+    structify.agents.create(name = "employees", source = Source.Document(path = new_file_path/*))])
 
 And just like that you've created a dataset from your documents. You can then run our :doc:`analysis` tools on the dataset to extract the data you need.

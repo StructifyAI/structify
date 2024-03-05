@@ -17,8 +17,7 @@ The simplest method is to allow users to view specific parts of the dataset that
 
 .. code-block:: python
 
-    def view_schools(user_id, dataset_name):
-        client = Structify(user_id)
+    def view_schools(dataset_name):
         return client.dataset.view(name = dataset_name, tables = ["education"], columns = ["name", "graduation_date"])
 
 You'll notice that we did not pass parameters for "entities" or "rows," which defaults them to all. So this function will return one table per entity that contains the names of the schools that they attended and when they graduated.
@@ -33,8 +32,7 @@ If we wanted to power a search for employees who attended a certain school, we c
 
 .. code-block:: python
 
-    def search_schools(user_id, dataset_name, school_name):
-        client = Structify(user_id)
+    def search_schools(dataset_name, school_name):
 
         # We need to specify the table and columns the keyword search applies to
         search_target = {
@@ -60,8 +58,7 @@ If we wanted to power users to search for employees by describing the type of sc
 
 .. code-block:: python
 
-    def plaintext_school_search(user_id, dataset_name, query):
-        client = Structify(user_id)
+    def plaintext_school_search(dataset_name, query):
         return client.analysis.query(dataset = dataset_name, query = query)
 
-Using the `client.analysis.query` endpoint powers a more conversational experience for users, and typically, we see this endpoint powering chatbots or other conversational interfaces.
+Using the ``client.analysis.query`` endpoint powers a more conversational experience for users, and typically, we see this endpoint powering chatbots or other conversational interfaces.

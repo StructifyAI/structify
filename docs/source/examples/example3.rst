@@ -18,83 +18,37 @@ The schema is a JSON object that defines the structure of the dataset. Remember 
 .. code-block:: python
 
     from structifyai import Structify
+    from pydantic import BaseModel
+    from typing import List, Optional
     import asyncio
     client = Structify()
 
-    # Define the schema for the dataset via a JSON object
-    # Remember that each dataset is made up of entities, each entity is made up of tables, and each table is made up of columns
-    schema = {
-        "name": "my_network",
-        "description": "Create a dataset named 'my_network' that tells me about the career and education experience of everyone in my network.",
-        "entities": [
-            {
-            "name": "person",
-            "description": "Someone who is in my network",
-            "tables": [
-                {
-                "name": "jobs",
-                "description": "A collection of the job titles and companies that each employee worked at",
-                "columns": [
-                    {
-                    "name": "title",
-                    "description": "The name of the job the employee held",
-                    "type": "TEXT"
-                    },
-                    {
-                    "name": "company",
-                    "description": "The name of the company the employee worked at",
-                    "type": "TEXT"
-                    },
-                    {
-                    "name": "industry",
-                    "description": "The industry the company is in",
-                    "type": "TEXT"
-                    }
-                ]
-                },
-                {
-                "name": "education",
-                "description": "A collection of the schools that each employee went to",
-                "columns": [
-                    {
-                    "name": "school_name",
-                    "description": "The name of the school",
-                    "type": "TEXT"
-                    },
-                    {
-                    "name": "school_gradyear",
-                    "description": "The year the employee graduated",
-                    "type": "INTEGER"
-                    }
-                ]
-                },
-                {
-                "name": "profile",
-                "description": "A collection of the profile information of each person",
-                "columns": [
-                    {
-                    "name": "name",
-                    "description": "The name of the person",
-                    "type": "TEXT"
-                    },
-                    {
-                    "name": "photo",
-                    "description": "The profile photo of the person",
-                    "type": "IMAGE"
-                    },
-                    {
-                    "name": "linkedin url",
-                    "description": "The LinkedIn URL of the person",
-                    "type": "URL"
-                    }
-                ]
-                }
-            ]
-        ],
-    }
+    # Define the schema for the dataset in a Pydantic model
+
+    class Person(BaseModel):
+        name: str
+        jobs: List[Job]
+        education: List[School]
+        photo: Optional[str]
+        linkedin_url: str
+
+    class Job(BaseModel):
+        title: str
+        company: str
+        industry: str
+
+    class School(BaseModel):
+        name: str
+        degree: str
+        gradyear: int   
+
 
     # Create a network dataset
-    network = client.dataset.create(schema)
+    network = client.dataset.create(
+        name = "my_network",
+        description = "A dataset representing the job and educational experience of people in my network",
+        tables = [Person.schema(), Job.schema(), School.schema()]
+    )
 
 .. note:: 
     You can also use client.dataset.llm-create(prompt) to have our LLM generate your schema for you.
@@ -104,21 +58,23 @@ Step 2: Populate the Network Dataset
 Next, you are going to use the populate endpoint to add data to the dataset. Here, we use the scraper endpoint to grab the data from the Web.
 Since information about your network can easily be found via LinkedIn, we are going to limit the sources to LinkedIn.
 There are other limitations you can put in place such as limiting the tables you want to grab information for.
-In this example, we don't care about where the person went to school, so we are going to limit the tables to just the jobs and profile table.
+In this example, we don't care about where the person went to school, so we are going to limit the tables to just the jobs and person table.
 Limiting where applicable is a good practice to save your credits.
 
 .. code-block:: python
 
     # Populate the network dataset
     scraper = client.agents.create(
-        dataset = network.name,
-        sources = Internet.LinkedIn,
-        number = 3 # Limit the number of active agents running to grab this information to 3, another form of limiting. The more agents, the faster the query will process.
-        tables = ["jobs", "profile"]
+        dataset = "my_network",
+        sources = [Source.Internet(websites = "linkedin.com"), Source.Document(path = "contacts.csv")],
+        # Limit the number of active agents running to grab this information to 3, another form of limiting. The more agents, the faster the query will process.
+        number = 3,
+        tables = [Job, Person]
     )
+    client.it("my_network")
 
-    # Wait for the agents to finish running
-    await scraper.status() == "complete"
+    # Wait for the agents to finish processing 1000 contacts
+    client.dataset.wait(name = "my_network", k = 1_000)
     print("The network dataset has finished populating from LinkedIn.")
 
 Step 3: Search the Dataset for Contacts with Domain Expertise
@@ -133,7 +89,7 @@ If you've defined the schema with defined industries, you can use the view endpo
 
     # Search for contacts who have worked at companies in the target industry
     aiInfra_contacts = client.dataset.view(
-        name=network.name,
+        name = "my_network",
         # If you are looking for something with a certain value, you can specify it in a JSON like the following:
         inputs = {
             "entity": 
@@ -177,7 +133,7 @@ This endpoint lets you filter for not specifically defined fields, such as "sale
 
     # Filter the dataset for contacts who have worked at companies in the target role
     sales_contacts = client.analysis.filter(
-        name=network.name,
+        name = "my_network",
         # Here you specify that level of the dataset you are filtering through and where it is
         target_type = "column"
         target_location = {
@@ -203,7 +159,7 @@ If you want to ensure the dataset is up to date, use the refresh endpoint to upd
 
     # Refresh the network dataset
     refresh = client.dataset.refresh(
-        name = network['name'],
+        name = "my_network",
         id = scraper.id,
         # You can also specify the frequency of the refresh. The below will refresh the dataset every day at 9am.
         type = recurring,

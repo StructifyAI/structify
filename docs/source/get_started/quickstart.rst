@@ -33,6 +33,7 @@ Anytime you want to use the Structify Python library, you'll need to import it:
 .. code-block:: python
 
    from structifyai import Structify
+   structify = Structify("your-api-key-here")
 
 
 .. _Getting-An-API-Key:
@@ -53,93 +54,48 @@ Create Your First Dataset
 -------------------------
 You can create a dataset with two quick successive API calls:
 
-#. Define a schema using ``client.dataset.create`` or ``client.dataset.llm-create``.
-#. Specify the source to populate the dataset from with ``client.agents.create``.
+#. Define a schema using ``structify.dataset.create`` or ``structify.dataset.llm-create``.
+#. Specify the source to populate the dataset from with ``structify.agents.create``.
 
 Here's an example of how you would make an API call to create a dataset:
 
 .. code-block:: python
    
-   from structifyai import Structify
+   from structifyai import Source
+   from pydantic import BaseModel
+   from typing import List
 
-   # Define a schema
-   schema = {
-      "name": "books",
-      "description": "Create a dataset named 'books' that tells me about the authors and publishers of books.",
-      "entities": [
-         {
-         "name": "book",
-         "description": "A text with both an author and a publisher",
-         "tables": [
-               {
-               "name": "author",
-               "description": "A collection of information about the authors of the book",
-               "columns": [
-                  {
-                  "name": "name",
-                  "description": "The name of the author(s)",
-                  "type": "TEXT"
-                  },
-                  {
-                  "name": "genre",
-                  "description": "The genre that the author most often writes in",
-                  "type": "TEXT"
-                  }
-               ]
-               },
-               {
-               "name": "publisher",
-               "description": "A collection of information about the publisher of the book",
-               "columns": [
-                  {
-                  "name": "name",
-                  "description": "The name of the publisher",
-                  "type": "TEXT"
-                  },
-                  {
-                  "name": "location",
-                  "description": "where the publisher is located",
-                  "type": "TEXT"
-                  }
-               ]
-               },
-               {
-               "name": "details",
-               "description": "A collection of the details of the book",
-               "columns": [
-                  {
-                  "name": "name",
-                  "description": "The name of the book",
-                  "type": "TEXT"
-                  },
-                  {
-                  "name": "cover",
-                  "description": "The cover photo of the book",
-                  "type": "IMAGE"
-                  },
-                  {
-                  "name": "copies_sold",
-                  "description": "The number of copies of the book sold to date",
-                  "type": "INTEGER"
-                  }
-               ]
-               }
-            ]
-         }
-      ],
-   }
+   # Define a schema as a pydanctic model
+
+   class Author(BaseModel):
+            name: str
+            genre: str
+
+   class Publisher(BaseModel):
+            name: str
+            location: int
+
+   class Book(BaseModel):
+            author: List[Author]
+            publisher: List[publisher]
+            name: str
+            copies_sold: int
 
    # Use the schema to create the dataset
-   books_dataset = Structify.dataset.create(schema)
+   books_dataset = structify.dataset.create(
+      name = "books",
+      description = "Create a dataset named 'books' that tells me about the authors and publishers of books.",
+      tables = [Book.schema(), Author.schema(), Publisher.schema()]
+      )
 
    # Specify the source to populate the dataset from as a Python Enum
-   source = Internet.Goodreads
-   Structify.agents.create(dataset = "books", source = source)
+   source = [Source.Internet(website = "https://www.goodreads.com/")]
+   Structify.agents.create(dataset = "books", sources = source)
 
    # Run the agent to populate the dataset
    Structify.it("books")
 
 .. tip::
-   You could just as easily use the ``client.dataset.llm-create`` method to create a dataset with a schema that is automatically generated from the description included in the example above.
+   You could just as easily use the ``structify.dataset.llm-create`` method to create a dataset with a schema that is automatically generated from the description included in the example above.
 
 With that, you are on your way to structifying your data.

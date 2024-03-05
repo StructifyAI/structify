@@ -21,52 +21,35 @@ Before you can create researchers to automatically fill up your datasets, we nee
 
 Custom User Defined Schemas
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-If you have a schmea you want your dataset to follow, you can easily pre-define your schema in JSON.
+If you have a schmea you want your dataset to follow, you can easily pre-define your schema as a pydantic model.
 
 .. code-block:: python
     
         from structifyai import Structify
-    
-        schema = {
-            "name": "employees",
-            "description": "A dataset named 'employees' that tells me about their job and education history.",
-            "tables": [
-                {
-                    "name": "jobs",
-                    "description": "A collection of the job titles and companies that each employee worked at",
-                    "columns": [
-                        {
-                            "name": "title",
-                            "description": "The name of the job the employee held",
-                            "type": "TEXT"
-                        },
-                        {
-                            "name": "company",
-                            "description": "The name of the company the employee worked at",
-                            "type": "TEXT"
-                        }
-                    ]
-                },
-                {
-                    "name": "education",
-                    "description": "A collection of the schools that each employee went to",
-                    "columns": [
-                        {
-                            "name": "school_name",
-                            "description": "The name of the school",
-                            "type": "TEXT"
-                        },
-                        {
-                            "name": "school_gradyear",
-                            "description": "The year the employee graduated",
-                            "type": "INTEGER"
-                        }
-                    ]
-                }
-            ]
-        }
-    
-        employees = Structify.dataset.create(schema)
+        from pydantic import BaseModel
+        from typing import List
+
+        structify = Structify("your-api-key-here")
+
+        class Job(BaseModel):
+            title: str
+            company: str
+
+        class Education(BaseModel):
+            school_name: str
+            school_gradyear: int
+
+        class Employee(BaseModel):
+            job: List[Job]
+            education: List[Education]
+        
+        employees = structify.dataset.create(
+            name="employees", 
+            description="A dataset named 'employees' that tells me about their job and education history.", 
+            tables=[Employee.schema()]
+            )
+
+        
         Structify.dataset.schema.view(employees)
 
 And the output will echo back a JSON representation of the schema you just created.
@@ -80,11 +63,9 @@ Here's an example of an API call to create a dataset using the LLM and the respo
 
 .. code-block:: python
 
-    from structifyai import Structify
-
     prompt = {"text": "Create a dataset named 'employees' that tells me about their job and education history."}
 
-    employees = Structify.dataset.llm-create(prompt)
+    employees = Structify.dataset.llm-create(name = "employees", description = prompt)
     print(Structify.dataset.schema.view(employees))
 
 
@@ -133,7 +114,7 @@ And the output will look like this:
 
 
 .. tip::
-    You can edit the schema that is returned if it is missing something you need. In that case, you can use ``Structify.dataset.schema.modify`` to adjust the schema.
+    You can edit the schema that is returned if it is missing something you need. In that case, you can use ``structify.dataset.schema.modify`` to adjust the schema.
 
 
 .. _populating-datasets:
@@ -142,31 +123,32 @@ Populating Your Datasets
 ------------------------
 Once you have blueprinted your dataset by creating a schema, you can now use Structify's research agents to collect data to fill your dataset.
 
-For most datasets, you are going to want to user our scraper agents to collect data from the web. You can use ``Structify.agents.create`` and then ``Structify.it()`` to populate a dataset with an initial batch of data. The agents API call requires the following:
+For most datasets, you are going to want to user our scraper agents to collect data from the web. You can use ``structify.agents.create`` and then ``structify.it()`` to populate a dataset with an initial batch of data. The agents API call requires the following:
 
 - **name:** The name of the dataset you want to populate
-- **source:** The sources or types of sources you want the agent to use (e.g. “LinkedIn” or “news articles”). These will be a Python enum of the sources available to the agent. If not specified, the agent will default to using all available sources.
+- **source:** The sources or types of sources you want the agent to use (e.g. “LinkedIn” or “news articles”). These will be a Python enum of the sources available to the agent. Make sure to import Source. If not specified, the agent will default to using all available sources.
 - **number:** The number of agents that are actively running for a query. The more you create, the faster the dataset will populate, but it requires more credits to do so. If not specified, the value will default to 1.
 
 Here's an example of an API call to populate that employees dataset with data from LinkedIn:
 
 .. code-block:: python
 
-    from structifyai import Structify
+    from structifyai import Structify, Source
+    structify = Structify("your-api-key-here")
 
-    Structify.agents.create(name = "employees", source = Internet.LinkedIn, number = 5)
-    Structify.it("employees") # This will start the agents to populate the dataset
+    structify.agents.create(name = "employees", sources = Source.Internet(websites = ["linkedin.com"]), number = 5)
+    structify.it("employees") # This will start the agents to populate the dataset
 
 
 .. note::
-    You can also pass in the agent ids to the ``Structify.it()`` function to start specific agents witin a dataset.
+    You can also pass in the agent ids to the ``structify.it()`` function to start specific agents witin a dataset.
 
 .. tip::
-    You can check the status of the populate request through ``employees.status()`` or ``print(Structify.dataset.list("employees"))`` to see the status object.
+    You can check the status of the populate request through ``employees.status()`` or ``print(structify.dataset.list("employees"))`` to see the status object.
 
 Populating Datasets from Documents
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Sometimes, you will want to collect data from documents, such as PDFs or PNGs. You can use the ``Structify.agents.create`` endpoint off of documents as well. 
+Sometimes, you will want to collect data from documents, such as PDFs or PNGs. You can use the ``structify.agents.create`` endpoint off of documents as well. 
 
 We'll walk you through the process to uploading documents and such in the :doc:`documents` section. Or you can check out the tutorials at :ref:`document-example`.
 
@@ -182,31 +164,31 @@ Populating datasets with Structify's research agents will be the main process th
 - **source_limit:** A set amount of sources that the scraper will check. This parameter is designed to limit your request to save credits, if needed.
 
 .. tip::
-    Check ``Structify.account.credits_remaining()`` periodically to see how many credits you have left.
+    Check ``structify.account.credits_remaining()`` periodically to see how many credits you have left.
 
 .. _Refreshing-Dataset:
 
 Refreshing Your Dataset
 -----------------------
-Of course, the data in your dataset will become outdated over time. You can use the ``Structify.dataset.refresh`` API call to update the data in your dataset.
+Of course, the data in your dataset will become outdated over time. You can use the ``structify.dataset.refresh`` API call to update the data in your dataset.
 
 You can set the dataset to refresh on a recurring schedule or refresh continuously. For one-time refreshes, we recommend just running ``Structify.it()`` again to update the dataset.
 
 .. code-block:: python
 
     # First, you need to determine the id of the agents created for the dataset
-    agents = Structify.agents.list("employees")
+    agents = structify.agents.list("employees")
     agent_ids = [agent['id'] for agent in agents]
 
     # Then, you can refresh the dataset. Note, you could set the type to "recurring" or "continuous" if you want to refresh the dataset on a schedule or continuously.
-    Structify.dataset.refresh(name = "employees", id = agent_ids, type = "continuous")
+    structify.dataset.refresh(name = "employees", id = agent_ids, type = "continuous")
 
 .. note::
     If you want to refresh the dataset on a schedule, you have to pass an additional time and frequency parameter to the API call. The time parameter is a string in the format "YYYY-MM-DD HH:MM:SS", where the date determine the start date and the time represents the time the refresh will run. The frequency parameter is a string that can be "daily", "weekly", "biweekly," "monthly", or "yearly".
 
 Bonus: Sharing Datasets
 -----------------------
-Oftentimes, you will want to share your dataset with others. You can use the ``Structify.dataset.share`` API call to share your dataset with others. This API call requires the following:
+Oftentimes, you will want to share your dataset with others. You can use the ``structify.dataset.share`` API call to share your dataset with others. This API call requires the following:
 
 * **name:** The name of the dataset you want to share
 * **share_method:** The method of sharing the dataset. This can be "public" or "private". 
@@ -221,9 +203,7 @@ Here's an example that walks through sharing the employees dataset with various 
 
 .. code-block:: python
 
-    from structifyai import Structify
-
-    Structify.dataset.share(
+    structify.dataset.share(
         name = "employees", 
         share_method = "private", 
         restrictions = "no-delete",
